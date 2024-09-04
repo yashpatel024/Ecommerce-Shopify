@@ -1,9 +1,18 @@
-export default function Home() {
-  const newLocal = 'Hello'
+import { getProducts } from "@/services/shopify-services";
+import React from 'react';
+
+export default async function Home() {
+  const products = await getProducts();
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main>
       <h1>Ecommerce Project</h1>
+      {products.map((product) => (
+        <div key={product.id}>
+          <h2>{product.title}</h2>
+          <p>{product.description}</p>
+        </div>
+      ))}
     </main>
   )
 }

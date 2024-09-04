@@ -10,10 +10,12 @@
     "prettier": "prettier --write ."
   },
   "dependencies": {
+    "@types/shopify-buy": "^2.17.4",
     "e-commerce-shopify": "file:",
     "next": "14.2.7",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "shopify-buy": "^2.22.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
@@ -27,7 +29,7 @@
     "eslint-config-next": "14.2.7",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "eslint-plugin-react": "^7.35.1",
+    "eslint-plugin-react": "^7.35.2",
     "globals": "^15.9.0",
     "postcss": "^8",
     "prettier": "^3.3.3",
