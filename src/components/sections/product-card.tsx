@@ -4,16 +4,22 @@ import React from 'react'
 import type { Product } from 'shopify-buy'
 
 export default function ProductCard({ product }: { product: Product }) {
+  const productString: string = JSON.stringify(product.images[0])
+  const productImage: string = JSON.parse(productString).src
+
   return (
     <div
       key={product.id}
       className="w-[30%] bg-white shadow-md rounded-xl p-4 flex flex-col gap-4 hover:shadow-lg"
     >
       <Image
-        src={product.images[0].url}
+        src={
+          productImage.startsWith('https://cdn.shopify.com') ? productImage : ''
+        }
         alt={product.title}
         width={300}
         height={300}
+        className="rounded-xl w-full h-250"
       />
       <Link href={`/product/${product.handle}`} className="cursor-pointer">
         <h2 className="text-2xl font-bold text-secondary-typography">
