@@ -1,8 +1,8 @@
-import { client } from '@/utils/shopify';
+import { client } from '@/utils/shopify'
 
 const getProducts = async () => {
-  const products = await client.product.fetchAll();
-  return products;
-};
+  const products = await client.product.fetchAll()
+  return products
+}
 
-export { getProducts };
+export { getProducts }

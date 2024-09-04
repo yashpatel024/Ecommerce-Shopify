@@ -1,8 +1,8 @@
-import { getProducts } from "@/services/shopify-services";
-import React from 'react';
+import { getProducts } from '@/services/shopify-services'
+import React from 'react'
 
 export default async function Home() {
-  const products = await getProducts();
+  const products = await getProducts()
 
   return (
     <main>
