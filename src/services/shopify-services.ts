@@ -1,8 +1,17 @@
 import { client } from '@/utils/shopify'
+import type { Product } from 'shopify-buy'
 
+/**
+ * Get all products - Shopify Buy API
+ */
 const getProducts = async () => {
-  const products = await client.product.fetchAll()
+  const products: Product[] = await client.product.fetchAll()
   return products
 }
 
-export { getProducts }
+const getProduct = async (id: string) => {
+  const product: Product = await client.product.fetch(id)
+  return product
+}
+
+export { getProducts, getProduct }
