@@ -1,4 +1,4 @@
-import ProductCard from '@/components/ui/product-card'
+import ProductCard from '@/components/sections/product-card'
 import { getProducts } from '@/services/shopify-services'
 import React from 'react'
 import type { Product } from 'shopify-buy'
