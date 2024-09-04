@@ -2,7 +2,7 @@ import { getProducts } from '@/services/shopify-services'
 // import Button from '@/components/ui/Button'
 import React from 'react'
 import type { Product } from 'shopify-buy'
-import ProductCard from '@/components/ui/product-card'
+import ProductCard from '@/components/sections/product-card'
 
 export default async function Home() {
   const products: Product[] = await getProducts()
