@@ -42,7 +42,7 @@ export default async function Product({ params }: Props) {
         height={500}
       />
       <div className="flex flex-col justify-between items-center w-1/2">
-        <p className="text-light-typography text-light-typography">
+        <p className="text-light-typography">
           {productData.description}
         </p>
         {/* Show the variants of the product from product.variants[0] */}
