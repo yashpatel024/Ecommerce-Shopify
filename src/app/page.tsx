@@ -1,11 +1,9 @@
+import { ProductCard } from '@/components/sections'
 import { getProducts } from '@/services/shopify-services'
-// import Button from '@/components/ui/Button'
-import React from 'react'
-import type { Product } from 'shopify-buy'
-import ProductCard from '@/components/sections/product-card'
+import type { ShopifyProduct } from '@/types/shopify.types'
 
 export default async function Home() {
-  const products: Product[] = await getProducts()
+  const products: ShopifyProduct[] = await getProducts()
 
   return (
     <main className="flex flex-col items-center justify-center py-8">

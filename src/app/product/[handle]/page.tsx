@@ -1,31 +1,20 @@
-import { productQuery } from '@/utils/graphql'
-import { StorefrontClient } from '@/utils/shopify'
+import { getProduct } from '@/services/shopify-services'
 import Image from 'next/image'
-import React from 'react'
+import type { ShopifyProduct } from '@/types/shopify.types'
 
-export type Props = {
+type ProductPageProps = {
   params: {
     handle: string
   }
 }
 
-export default async function Product({ params }: Props) {
-  const { data, errors, extensions } = await StorefrontClient.request(
-    productQuery,
-    {
-      variables: {
-        handle: params.handle,
-      },
-    },
-  )
+export default async function Product({ params }: ProductPageProps) {
+  // Fetch the product data from Shopify-Buy API
+  const productData: ShopifyProduct | null = await getProduct(params.handle)
 
-  if (!data.product) {
-    console.log(errors)
-    console.log(extensions)
+  if (productData === null) {
     return <div>Product not found</div>
   }
-
-  const productData = data?.product
 
   return (
     <section
@@ -36,7 +25,7 @@ export default async function Product({ params }: Props) {
         {productData.title}
       </h1>
       <Image
-        src={productData.images.nodes[0].src}
+        src={productData.images[0].src}
         alt={productData.title}
         width={500}
         height={500}
@@ -46,7 +35,7 @@ export default async function Product({ params }: Props) {
         {/* Show the variants of the product from product.variants[0] */}
         <div className="flex justify-between items-center">
           <p className="text-sm font-medium text-secondary-typography">
-            Price - ${productData.priceRange.maxVariantPrice.amount}
+            Price - ${productData.variants[0].price.amount}
           </p>
         </div>
       </div>

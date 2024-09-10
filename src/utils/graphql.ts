@@ -1,3 +1,4 @@
+// NOT IN USE
 export const productQuery = `
   query ProductQuery($handle: String) {
     product(handle: $handle) {
