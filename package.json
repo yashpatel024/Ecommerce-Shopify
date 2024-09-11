@@ -10,8 +10,10 @@
     "prettier": "prettier --write ."
   },
   "dependencies": {
+    "@shopify/shopify-api": "^11.4.0",
     "@shopify/storefront-api-client": "^1.0.1",
     "@types/shopify-buy": "^2.17.4",
+    "@woocommerce/woocommerce-rest-api": "^1.0.1",
     "e-commerce-shopify": "file:",
     "next": "14.2.7",
     "react": "^18",
