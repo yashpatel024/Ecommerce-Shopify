@@ -21,4 +21,6 @@ export interface ShopifyProduct {
   variants: ShopifyVariant[]
   tags: string[]
   productType: string
+  price: number
+  status: string
 }

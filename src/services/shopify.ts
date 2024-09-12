@@ -1,6 +1,8 @@
-import { client } from '@/utils/config/shopify'
+import { adminClient, client } from '@/utils/config/shopify'
 import type { ShopifyProduct } from '@/types/shopify.types'
 import { deserializeProduct } from '@/utils/product-deserializer'
+import { createProductQuery } from '@/utils/queries/graphql'
+import { WooCommerceProduct } from '@/types/woocommerce.types'
 
 /**
  * Get all products - Shopify Buy API
@@ -25,10 +27,15 @@ const getProduct = async (handle: string): Promise<ShopifyProduct | null> => {
   }
 }
 
-// TODO - Create Shopify product from WooCommerce product
-// TODO - Shopify-buy does not support creating products
-const createShopifyProduct = async (product: any): Promise<ShopifyProduct> => {
+const createShopifyProduct = async (
+  product: ShopifyProduct,
+): Promise<ShopifyProduct> => {
   try {
+    const response = await adminClient.post('products', {
+      data: {
+        product: product,
+      },
+    })
     return product
   } catch (error) {
     console.error(`Error creating Shopify product ${product.title}:`, error)

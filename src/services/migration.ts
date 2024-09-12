@@ -1,3 +1,4 @@
+import { ShopifyProduct } from '@/types/shopify.types'
 import { createShopifyProduct } from './shopify'
 import { fetchWooProducts } from './woocommerce'
 import { transformProduct } from '@/utils/product-transformer'
