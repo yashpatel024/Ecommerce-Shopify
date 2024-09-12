@@ -29,6 +29,7 @@
     "@types/prettier": "^3.0.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/woocommerce__woocommerce-rest-api": "^1.0.5",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.7",
     "eslint-config-prettier": "^9.1.0",
