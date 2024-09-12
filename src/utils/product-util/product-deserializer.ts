@@ -16,6 +16,7 @@ export const deserializeProduct = (product: any): ShopifyProduct => {
         alt: variant.image.alt,
       }),
     ),
+    price: product.variants[0].price.amount,
     variants: product.variants.map(
       (variant: any): ShopifyVariant => ({
         id: variant.id.toString(),
@@ -31,5 +32,6 @@ export const deserializeProduct = (product: any): ShopifyProduct => {
     ),
     tags: product.tags,
     productType: product.productType,
+    status: product.status,
   }
 }
