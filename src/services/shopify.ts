@@ -1,6 +1,9 @@
-import { client } from '@/utils/shopify'
+import { adminClient, client } from '@/utils/config/shopify'
 import type { ShopifyProduct } from '@/types/shopify.types'
 import { deserializeProduct } from '@/utils/product-deserializer'
+import { createProductQuery } from '@/utils/queries/graphql'
+import { WooCommerceProduct } from '@/types/woocommerce.types'
+
 /**
  * Get all products - Shopify Buy API
  */
@@ -24,4 +27,20 @@ const getProduct = async (handle: string): Promise<ShopifyProduct | null> => {
   }
 }
 
-export { getProducts, getProduct }
+const createShopifyProduct = async (
+  product: ShopifyProduct,
+): Promise<ShopifyProduct> => {
+  try {
+    const response = await adminClient.post('products', {
+      data: {
+        product: product,
+      },
+    })
+    return product
+  } catch (error) {
+    console.error(`Error creating Shopify product ${product.title}:`, error)
+    throw new Error('Failed to create Shopify product')
+  }
+}
+
+export { getProducts, getProduct, createShopifyProduct }
