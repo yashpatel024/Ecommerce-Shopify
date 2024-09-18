@@ -41,7 +41,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           className="mt-6"
           onClick={{
             action: 'redirect',
-            path: '/products',
+            path: '/checkout/' + product.handle,
           }}
         >
           Buy now

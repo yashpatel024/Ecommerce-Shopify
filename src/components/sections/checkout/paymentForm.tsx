@@ -1,16 +1,10 @@
-// src/components/checkout/PaymentForm.tsx
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { useCheckout } from '@/hooks/useCheckout'
+import type { ShopifyProduct } from '@/types/shopify.types'
 // import { Button } from '@/components/ui/button'
 
-interface Product {
-  id: string
-  name: string
-  price: number
-}
-
 interface PaymentFormProps {
-  product: Product
+  product: ShopifyProduct
 }
 
 export function PaymentForm({ product }: PaymentFormProps) {
@@ -84,7 +78,7 @@ export function PaymentForm({ product }: PaymentFormProps) {
         >
           {isLoading
             ? 'Processing...'
-            : `Pay $${(product.price / 100).toFixed(2)}`}
+            : `Pay $${(product.price * 1.0).toFixed(2)}`}
         </button>
       </form>
     </div>
