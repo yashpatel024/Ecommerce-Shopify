@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { Header, Footer } from '@/components/layout'
+import Header from '@/components/layout/header'
+import Footer from '@/components/layout/footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Brave - Furniture Store',
+  title: 'Bravely - Furniture Store',
   description: 'A beautiful and modern e-commerce store',
 }
 
@@ -20,7 +21,7 @@ export default function RootLayout({
       <body
         className={`bg-background-light text-primary-typography ${inter.className}`}
       >
-        <div className="container mx-auto px-4 h-full">
+        <div className="mx-auto h-full">
           <Header />
           {children}
           <Footer />

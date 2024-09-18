@@ -1,4 +1,4 @@
-import { ProductCard } from '@/components/sections'
+import ProductCard from '@/components/cards/productCard'
 import { getProducts } from '@/services/shopify'
 import type { ShopifyProduct } from '@/types/shopify.types'
 

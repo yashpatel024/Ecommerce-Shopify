@@ -1,7 +1,7 @@
 import { ShopifyProduct } from '@/types/shopify.types'
 import { createShopifyProduct } from './shopify'
 import { fetchWooProducts } from './woocommerce'
-import { transformProduct } from '@/utils/product-util/product-transformer'
+import { transformProduct } from '@/utils/product/product-transformer'
 
 /**
  * Migrate WooCommerce products to Shopify in batches
