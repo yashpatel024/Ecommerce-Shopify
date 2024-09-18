@@ -1,5 +1,5 @@
 import ProductCard from '@/components/cards/productCard'
-import { getProducts } from '@/services/shopify'
+import { getProducts } from '@/services/shopify/products'
 import type { ShopifyProduct } from '@/types/shopify.types'
 
 export default async function Products() {

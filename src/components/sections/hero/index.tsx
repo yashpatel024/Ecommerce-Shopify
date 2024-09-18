@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { Button } from '@/components/ui/button/button'
 
-export function Hero() {
+export default function Hero() {
   return (
     <section className="relative w-screen h-[80vh]">
       <div className="absolute inset-0">

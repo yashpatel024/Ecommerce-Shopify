@@ -1,4 +1,4 @@
-import { getProduct } from '@/services/shopify'
+import { getProduct } from '@/services/shopify/products'
 import Image from 'next/image'
 import type { ShopifyProduct } from '@/types/shopify.types'
 

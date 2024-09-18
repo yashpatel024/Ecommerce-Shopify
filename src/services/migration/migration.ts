@@ -1,6 +1,5 @@
-import { ShopifyProduct } from '@/types/shopify.types'
-import { createShopifyProduct } from './shopify'
-import { fetchWooProducts } from './woocommerce'
+import { createShopifyProduct } from '@/services/shopify/products'
+import { fetchWooProducts } from '@/services/wordpress/woocommerce'
 import { transformProduct } from '@/utils/product/product-transformer'
 
 /**
