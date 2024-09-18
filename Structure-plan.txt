@@ -1,0 +1,53 @@
+
+Folder Structure
+// Help me come up with a better structure
+
++ [public]
+    - next.svg
+    - vercel.svg
++ [src]
+    + [app]
+        + [api]
+            + []
+        + [product]
+            + [[handle]]
+        + [products]
+            - page.tsx
+        - favicon.ico
+        - globals.css
+        - layout.tsx
+        - page.tsx
+    + [components]
+        + [cards]
+            + [product]
+                - ProductCard.tsx
+                - ProductCard.types.ts
+        + [layout]
+            + [header]
+                - Header.tsx
+            + [footer]
+                - Footer.tsx
+        + [sections]
+        + [ui]
+    + [services]
+        - shopify-services.ts
+    + [utils]
+        - graphql.ts
+        - shopify.ts
+- .env.local
+- .eslintrc.json
+- .gitignore
+- .prettierignore
+- .prettierrc
+- eslint.config.mjs
+- next-env.d.ts
+- next.config.mjs
+- package-lock.json
+- package.json
+- postcss.config.mjs
+- README.md
+- tailwind.config.ts
+- tsconfig.json
+"
+
+

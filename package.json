@@ -16,6 +16,7 @@
     "@types/shopify-buy": "^2.17.4",
     "@woocommerce/woocommerce-rest-api": "^1.0.1",
     "e-commerce-shopify": "file:",
+    "lucide-react": "^0.441.0",
     "next": "14.2.7",
     "react": "^18",
     "react-dom": "^18",

@@ -1,12 +1,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import type { ProductCardProps } from './ProductCard.types'
+import { ShopifyProduct } from '@/types/shopify.types'
+import { Button } from '@/components/ui/button/button'
 
-export default function ProductCard({ key, product }: ProductCardProps) {
-  if (!product) {
-    return <h1>Product not found</h1>
-  }
+export interface ProductCardProps {
+  product: ShopifyProduct
+}
 
+export default function ProductCard({ product }: ProductCardProps) {
   const imageSrc = product.images[0].src
   const imageAlt = product.images[0].alt
   const productTitle = product.title
@@ -14,10 +15,7 @@ export default function ProductCard({ key, product }: ProductCardProps) {
   const productPrice = product.variants[0].price.amount
 
   return (
-    <div
-      key={key}
-      className="w-[30%] bg-white shadow-md rounded-xl p-4 flex flex-col gap-4 hover:shadow-lg"
-    >
+    <div className="w-[30%] bg-white shadow-md rounded-xl p-4 flex flex-col gap-4 justify-between hover:shadow-lg">
       <Image
         src={imageSrc}
         alt={imageAlt}
@@ -31,12 +29,23 @@ export default function ProductCard({ key, product }: ProductCardProps) {
         </h2>
       </Link>
 
-      <p className="text-light-typography">{productDescription}</p>
+      <p className="text-secondary-typography">{productDescription}</p>
       {/* Show the variants of the product from product.variants[0] */}
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-end">
         <p className="text-sm font-medium text-secondary-typography">
           ${productPrice}
         </p>
+
+        <Button
+          variant="primary"
+          className="mt-6"
+          onClick={{
+            action: 'redirect',
+            path: '/products',
+          }}
+        >
+          Buy now
+        </Button>
       </div>
     </div>
   )
