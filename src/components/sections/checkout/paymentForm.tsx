@@ -23,6 +23,7 @@ export function PaymentForm({ product }: PaymentFormProps) {
     if (!cardElement) {
       return
     }
+    console.log('cardElement:', cardElement)
 
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',
@@ -35,7 +36,7 @@ export function PaymentForm({ product }: PaymentFormProps) {
     }
 
     if (paymentMethod) {
-      await handlePayment(paymentMethod, product.id)
+      await handlePayment(paymentMethod, [product])
     }
   }
 
@@ -74,7 +75,7 @@ export function PaymentForm({ product }: PaymentFormProps) {
         <button
           type="submit"
           disabled={!stripe || isLoading}
-          className="w-full"
+          className="w-full mt-4"
         >
           {isLoading
             ? 'Processing...'

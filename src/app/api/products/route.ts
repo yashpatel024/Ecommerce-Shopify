@@ -3,12 +3,9 @@ import { ShopifyProduct } from '@/types/shopify.types'
 import { NextRequest } from 'next/server'
 
 export async function GET(request: NextRequest) {
-  console.log('HERE', request.nextUrl.searchParams)
   try {
     //Check for the product handle in the query params
     const productHandle = await request.nextUrl.searchParams.get('handle')
-
-    console.log('Fetching product with handle:', productHandle)
 
     if (productHandle) {
       //If the product handle is present, fetch the prodsuct

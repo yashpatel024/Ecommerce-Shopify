@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { PaymentMethod } from '@stripe/stripe-js'
+import type { ShopifyProduct } from '@/types/shopify.types'
 
 export function useCheckout() {
   const [error, setError] = useState<string | null>(null)
@@ -9,7 +10,7 @@ export function useCheckout() {
 
   const handlePayment = async (
     paymentMethod: PaymentMethod,
-    productId: string,
+    products: ShopifyProduct[],
   ) => {
     setIsLoading(true)
     setError(null)
@@ -21,16 +22,8 @@ export function useCheckout() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          amount: 1000, // Replace with actual product price
           paymentMethodId: paymentMethod.id,
-          orderData: {
-            line_items: [
-              {
-                variantId: productId,
-                quantity: 1,
-              },
-            ],
-          },
+          orderData: products,
         }),
       })
 
