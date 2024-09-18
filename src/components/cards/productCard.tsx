@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ShopifyProduct } from '@/types/shopify.types'
-import { Button } from '@/components/ui/button/button'
+import { Button } from '@/components/ui/button'
 
 export interface ProductCardProps {
   product: ShopifyProduct
@@ -41,7 +41,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           className="mt-6"
           onClick={{
             action: 'redirect',
-            path: '/products',
+            path: '/checkout/' + product.handle,
           }}
         >
           Buy now

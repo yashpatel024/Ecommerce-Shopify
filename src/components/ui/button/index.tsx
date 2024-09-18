@@ -35,6 +35,7 @@ export function Button({
 
   const handleButtonClick = () => {
     if (onClick?.action === 'redirect' && onClick.path) {
+      console.log(onClick.path)
       router.push(onClick.path)
     }
   }

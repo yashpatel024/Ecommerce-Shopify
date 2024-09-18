@@ -14,7 +14,7 @@ const HeaderLogo = () => {
 const Header = () => {
   return (
     <header className="sticky top-0 z-50 bg-white w-full">
-      <nav className="container mx-auto px-6 py-3">
+      <nav className="container py-3">
         <div className="flex justify-between items-center">
           <HeaderLogo />
           <NavLinks />

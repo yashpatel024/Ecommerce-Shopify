@@ -1,12 +1,17 @@
+import type { ShopifyProduct } from '@/types/shopify.types'
 import { client } from '@/utils/config/shopify'
 
-// TODO: Add types
-const createOrder = async (order: any) => {
+const createOrder = async (order: ShopifyProduct[]) => {
   try {
-    const response = await client.checkout.create(order)
+    const response = await client.checkout.create({
+      lineItems: order.map((product) => ({
+        variantId: product.variants[0].id,
+        quantity: 1,
+      })),
+    })
     return response
   } catch (error) {
-    console.error(`Error creating order ${order.id}:`, error)
+    console.error(`Error creating order ${order[0].id}:`, error)
     throw new Error('Failed to create order')
   }
 }
