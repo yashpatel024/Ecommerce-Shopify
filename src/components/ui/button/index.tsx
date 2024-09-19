@@ -13,6 +13,8 @@ interface ButtonProps {
   variant?: 'primary' | 'outline'
   className?: string
   onClick?: ButtonOnClick
+  type?: 'submit' | 'button'
+  disabled?: boolean
 }
 
 const baseStyles =
@@ -30,6 +32,7 @@ export function Button({
   variant = 'primary',
   className = '',
   onClick,
+  ...props
 }: ButtonProps) {
   const router = useRouter()
 
@@ -42,6 +45,7 @@ export function Button({
 
   return (
     <button
+      {...props}
       className={`${baseStyles} ${variantStyles[variant]} ${className}`}
       onClick={handleButtonClick}
     >
