@@ -10,34 +10,10 @@ type CheckoutPageProps = {
   }
 }
 
+// Get the host URL
 const getHostUrl = () => {
-  let protocol: string
-  let host: string
-
-  if (typeof window !== 'undefined') {
-    // Client-side
-    protocol = window.location.protocol.slice(0, -1) // Remove the colon
-    host = window.location.host
-  } else {
-    // Server-side
-    try {
-      const headersList = headers()
-      protocol = headersList.get('x-forwarded-proto') || 'http'
-      host =
-        headersList.get('host') || process.env.VERCEL_URL || 'localhost:3000'
-    } catch (error) {
-      console.error('Error getting headers:', error)
-      protocol = 'http'
-      host = 'localhost:3000'
-    }
-  }
-
-  // Ensure protocol is either 'http' or 'https'
-  protocol = ['http', 'https'].includes(protocol) ? protocol : 'https'
-
-  // Basic sanitation of host
-  host = host.replace(/[^\w.-:]/g, '')
-
+  const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
+  const host = process.env.VERCEL_URL! || 'localhost:3000'
   return `${protocol}://${host}`
 }
 
