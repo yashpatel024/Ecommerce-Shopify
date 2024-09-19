@@ -32,7 +32,7 @@ export function useCheckout() {
       if (paymentResponse.error) {
         setError(paymentResponse.error)
       } else {
-        router.push('/order-confirmation')
+        router.push('/') // TODO: Redirect to order confirmation page
       }
     } catch (error: any) {
       setError(error.message || 'An error occurred during payment')

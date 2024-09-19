@@ -1,7 +1,7 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { useCheckout } from '@/hooks/useCheckout'
 import type { ShopifyProduct } from '@/types/shopify.types'
-// import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
 
 interface PaymentFormProps {
   product: ShopifyProduct
@@ -72,15 +72,16 @@ export function PaymentForm({ product }: PaymentFormProps) {
           </div>
         </div>
         {error && <div className="text-red-500 mb-4">{error}</div>}
-        <button
-          type="submit"
+        <Button
+          variant="primary"
           disabled={!stripe || isLoading}
           className="w-full mt-4"
+          type="submit"
         >
           {isLoading
             ? 'Processing...'
             : `Pay $${(product.price * 1.0).toFixed(2)}`}
-        </button>
+        </Button>
       </form>
     </div>
   )

@@ -13,7 +13,7 @@ type CheckoutPageProps = {
 // Get the host URL
 const getHostUrl = () => {
   const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
-  const host = headers().get('host') || 'localhost:3000'
+  const host = process.env.VERCEL_URL! || 'localhost:3000'
   return `${protocol}://${host}`
 }
 
