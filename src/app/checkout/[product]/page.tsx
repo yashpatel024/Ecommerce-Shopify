@@ -13,7 +13,10 @@ type CheckoutPageProps = {
 // Get the host URL
 const getHostUrl = () => {
   const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
-  const host = process.env.VERCEL_URL! || 'localhost:3000'
+  const host =
+    process.env.NODE_ENV === 'production'
+      ? process.env.VERCEL_URL!
+      : 'localhost:3000'
   return `${protocol}://${host}`
 }
 
@@ -31,7 +34,7 @@ const CheckoutPage = async ({ params }: CheckoutPageProps) => {
   let product = null
 
   try {
-    product = await fetch('/api/products?handle=' + productHandle, {
+    product = await fetch(hostUrl + '/api/products?handle=' + productHandle, {
       method: 'GET',
     })
   } catch (error) {
