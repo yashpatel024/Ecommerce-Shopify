@@ -31,7 +31,7 @@ const CheckoutPage = async ({ params }: CheckoutPageProps) => {
   let product = null
 
   try {
-    product = await fetch(hostUrl + '/api/products?handle=' + productHandle, {
+    product = await fetch('/api/products?handle=' + productHandle, {
       method: 'GET',
     })
   } catch (error) {
