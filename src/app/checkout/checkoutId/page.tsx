@@ -6,7 +6,7 @@ import { Suspense } from 'react'
 
 type CheckoutPageProps = {
   params: {
-    product: string
+    checkoutId: string
   }
 }
 
@@ -24,7 +24,7 @@ const getHostUrl = () => {
  * Params: product - The handle of the product to be checked out
  */
 const CheckoutPage = async ({ params }: CheckoutPageProps) => {
-  const productHandle = params.product
+  const productHandle = params.checkoutId
   const hostUrl = getHostUrl()
 
   if (!productHandle) {
