@@ -6,14 +6,19 @@ import { Suspense } from 'react'
 
 type CheckoutPageProps = {
   params: {
-    product: string
+    checkoutId: string
   }
 }
 
 // Get the host URL
 const getHostUrl = () => {
   const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
-  const host = process.env.VERCEL_URL! || 'localhost:3000'
+
+  const host =
+    process.env.NODE_ENV === 'production'
+      ? process.env.VERCEL_URL!
+      : 'localhost:3000'
+
   return `${protocol}://${host}`
 }
 
@@ -21,7 +26,7 @@ const getHostUrl = () => {
  * Params: product - The handle of the product to be checked out
  */
 const CheckoutPage = async ({ params }: CheckoutPageProps) => {
-  const productHandle = params.product
+  const productHandle = params.checkoutId
   const hostUrl = getHostUrl()
 
   if (!productHandle) {
