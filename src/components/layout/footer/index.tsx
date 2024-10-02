@@ -3,8 +3,8 @@ import NavLinks from './navLinks'
 
 export default function Footer() {
   return (
-    <footer className="">
-      <div className="container mx-auto px-6 py-8">
+    <footer className="w-full">
+      <div className="px-6 py-8">
         <div className="flex flex-wrap justify-between">
           <div className="w-full md:w-1/4 mb-6 md:mb-0">
             <h2 className="text-gray-700 text-lg font-bold mb-4">About Us</h2>

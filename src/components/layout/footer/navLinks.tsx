@@ -1,12 +1,12 @@
-import { NAV_LINKS } from '@/constants/navLinks'
+import { NAVIGATION_LINKS } from '@/constants/navLinks'
 import Link from 'next/link'
 
 const NavLinks = () => {
   return (
     <ul className="text-gray-600">
-      {NAV_LINKS.map((link, index) => (
+      {NAVIGATION_LINKS.map((link, index) => (
         <li key={index} className="mb-2">
-          <Link href={link.href}>{link.label}</Link>
+          <Link href={link.href}>{link.name}</Link>
         </li>
       ))}
     </ul>
