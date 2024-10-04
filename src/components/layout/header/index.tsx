@@ -51,7 +51,7 @@ const Header = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 w-full bg-white transition-all duration-300 ${isScrolled ? 'h-16' : 'h-24'}`}
     >
-      <div className="relative w-full h-full px-8 flex items-center justify-between">
+      <div className="container relative w-full h-full flex items-center justify-between">
         {/* Tablet and Desktop Hamburger menu button */}
         <HamburgerMenu
           isSidebarOpen={isSidebarOpen}

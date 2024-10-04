@@ -26,7 +26,7 @@ export default function SideNavigationBar({
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className={`p-4 pl-10 ${isScrolled ? 'pt-4' : 'pt-6'}`}>
+        <div className={`px-8 ${isScrolled ? 'pt-4' : 'pt-6'}`}>
           <HamburgerMenu
             isSidebarOpen={sidebarOpen}
             toggleSidebar={toggleSidebar}

@@ -10,13 +10,13 @@ export default function MobileMenu({
   toggleSidebar,
 }: MobileMenuProps) {
   return (
-    <div className="block md:hidden bg-light-secondary-typography text-white">
-      <div className="mx-auto px-4 h-12 flex items-center justify-between">
+    <div className="container block md:hidden bg-light-secondary-typography text-white">
+      <div className="mx-auto h-12 flex items-center justify-between">
         <span className="font-semibold">Menu</span>
         <HamburgerMenu
           toggleSidebar={toggleSidebar}
           isSidebarOpen={isSidebarOpen}
-          className="block md:hidden"
+          className="flex md:hidden"
         />
       </div>
     </div>

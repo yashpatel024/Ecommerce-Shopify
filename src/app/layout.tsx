@@ -21,7 +21,7 @@ export default function RootLayout({
       <body
         className={`bg-background-light text-primary-typography ${inter.className}`}
       >
-        <div className="mx-auto h-full px-12">
+        <div className="container mx-auto h-full">
           <Header />
           {children}
           <Footer />
