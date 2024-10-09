@@ -27,7 +27,7 @@ const variantStyles = {
     'border border-background-light text-light-typography hover:bg-background-light hover:text-primary-typography',
 }
 
-export function Button({
+export default function Button({
   children,
   variant = 'primary',
   className = '',

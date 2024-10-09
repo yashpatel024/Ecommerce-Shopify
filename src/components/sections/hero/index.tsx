@@ -1,9 +1,9 @@
 'use client'
 import Image from 'next/image'
-import { Button } from '@/components/ui/button'
 import { useEffect, useState } from 'react'
-import ProductCarousel from '@/components/sections/hero/productCarousel'
+import ProductCarousel from '@/components/ui/shadcn/productCarousel'
 import { type ShopifyProduct } from '@/types/shopify.types'
+import NewProduct from '../../cards/newProductCard'
 
 //
 
@@ -20,38 +20,26 @@ export default function Hero() {
   }, [])
 
   return (
-    <section className="container relative w-full pt-24 h-[100vh] flex items-center">
-      <div className="flex flex-col-reverse md:flex-row gap-4 w-full">
+    // Margin Top is 24 + 12 (Header), Paddign top is 8, md: 10
+    <section className="relative w-full mt-36 pt-8 md:pt-0 h-[100vh] flex items-start">
+      <div className="relative flex flex-col-reverse md:items-center lg:flex-row gap-4 w-full lg:px-12 lg:justify-center">
         {/* First column with 2 rows */}
-        <div className="grid grid-rows-2 gap-4">
-          {/* <div className="bg-gray-100 p-4 rounded-lg">
-            <Image
-              src={products[0].images[0].src}
-              alt={products[0].title}
-              width={400}
-              height={400}
-              className="w-full h-auto"
-            />
-            <h3 className="text-lg font-semibold mt-2">{products[0].title}</h3>
-            <p className="text-sm text-gray-600">{products[0].description}</p>
-          </div>
-          <div className="bg-gray-100 p-4 rounded-lg">
-            <Image
-              src={products[1].images[0].src}
-              alt={products[1].title}
-              width={400}
-              height={400}
-              className="w-full h-auto"
-            />
-            <h3 className="text-lg font-semibold mt-2">{products[1].title}</h3>
-            <p className="text-sm text-gray-600">{products[1].description}</p>
-          </div> */}
+        <div className="relative grid grid-rows-2 gap-4 md:grid-rows-1 md:grid-cols-2 lg:grid-cols-1 lg:h-full lg:w-1/3">
+          {products.length > 0 && (
+            <>
+              <NewProduct product={products[0]} variant="one" />
+              {products.length > 1 && (
+                <NewProduct product={products[1]} variant="two" />
+              )}
+            </>
+          )}
         </div>
 
         {/* Second column with carousel */}
-        <div className="relative bg-gray-100 p-4 rounded-lg">
-          <ProductCarousel products={products} />
-        </div>
+        <ProductCarousel
+          products={products}
+          className="w-full h-fit lg:w-2/3 lg:h-full relative bg-[#F4F5F3] px-6 py-6 flex flex-col justify-center gap-6"
+        />
       </div>
     </section>
   )

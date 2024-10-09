@@ -4,18 +4,27 @@ import { twMerge } from 'tailwind-merge'
 interface CartIconsProps {
   cartItems: number
   className?: string
+  cartItemClassName?: string
 }
 
-export default function Cart({ cartItems, className = '' }: CartIconsProps) {
+export default function Cart({
+  cartItems,
+  className = '',
+  cartItemClassName = '',
+}: CartIconsProps) {
   return (
     <button
       className={twMerge(
-        'py-2 w-10 h-10 flex items-center justify-center',
+        'py-2 w-10 h-10 flex items-center justify-center relative',
         className,
       )}
     >
       <ShoppingCart size={24} />
-      <span className="absolute top-7 right-7 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+      <span
+        className={twMerge(
+          'absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center',
+        )}
+      >
         {cartItems}
       </span>
     </button>

@@ -10,7 +10,7 @@ export default function MobileMenu({
   toggleSidebar,
 }: MobileMenuProps) {
   return (
-    <div className="container block md:hidden bg-light-secondary-typography text-white">
+    <div className="container-div block md:hidden bg-light-secondary-typography text-white">
       <div className="mx-auto h-12 flex items-center justify-between">
         <span className="font-semibold">Menu</span>
         <HamburgerMenu

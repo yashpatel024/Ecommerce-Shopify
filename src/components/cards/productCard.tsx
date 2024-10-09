@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ShopifyProduct } from '@/types/shopify.types'
-import { Button } from '@/components/ui/button'
+import Button from '@/components/ui/button'
 
 export interface ProductCardProps {
   product: ShopifyProduct

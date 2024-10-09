@@ -12,7 +12,7 @@ body {
   font-family: Inter;
 }
 
-.container {
+.container-div {
   @apply px-8 md:px-10;
 }
 

@@ -1,7 +1,7 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { useCheckout } from '@/hooks/useCheckout'
 import type { ShopifyProduct } from '@/types/shopify.types'
-import { Button } from '@/components/ui/button'
+import Button from '@/components/ui/button'
 
 interface PaymentFormProps {
   product: ShopifyProduct
