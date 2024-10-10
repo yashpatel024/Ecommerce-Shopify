@@ -1,7 +1,9 @@
+'use client'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ShopifyProduct } from '@/types/shopify.types'
 import Button from '@/components/ui/button'
+import { addToCart } from '@/utils/cart'
 
 export interface ProductCardProps {
   product: ShopifyProduct
@@ -45,6 +47,18 @@ export default function ProductCard({ product }: ProductCardProps) {
           }}
         >
           Buy now
+        </Button>
+        <Button
+          variant="primary"
+          className="mt-6"
+          onClick={{
+            action: 'action',
+            callbackAction: addToCart,
+            args: [product.handle],
+            // You can add a notification or redirect to the cart page here
+          }}
+        >
+          Add to cart
         </Button>
       </div>
     </div>

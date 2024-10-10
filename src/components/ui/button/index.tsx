@@ -6,13 +6,15 @@ import { ReactNode } from 'react'
 interface ButtonOnClick {
   action: 'redirect' | 'action'
   path?: string
+  callbackAction?: (...args: any[]) => void
+  args?: any[]
 }
 
 interface ButtonProps {
   children: ReactNode
   variant?: 'primary' | 'outline'
   className?: string
-  onClick?: ButtonOnClick
+  onClick: ButtonOnClick
   type?: 'submit' | 'button'
   disabled?: boolean
 }
@@ -37,9 +39,10 @@ export default function Button({
   const router = useRouter()
 
   const handleButtonClick = () => {
-    if (onClick?.action === 'redirect' && onClick.path) {
-      console.log(onClick.path)
+    if (onClick.action === 'redirect' && onClick.path) {
       router.push(onClick.path)
+    } else if (onClick.action === 'action' && onClick.callbackAction) {
+      onClick.callbackAction(...(onClick.args || []))
     }
   }
 

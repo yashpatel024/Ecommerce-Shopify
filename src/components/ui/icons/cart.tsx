@@ -1,17 +1,19 @@
 import { ShoppingCart } from 'lucide-react'
 import { twMerge } from 'tailwind-merge'
+import { useCartOperations } from '@/hooks/useCartOperations'
 
-interface CartIconsProps {
-  cartItems: number
+interface CartIconProps {
   className?: string
   cartItemClassName?: string
 }
 
 export default function Cart({
-  cartItems,
   className = '',
   cartItemClassName = '',
-}: CartIconsProps) {
+}: CartIconProps) {
+  const { getCartItemsCount } = useCartOperations()
+  const cartItems = getCartItemsCount()
+
   return (
     <button
       className={twMerge(
@@ -20,13 +22,16 @@ export default function Cart({
       )}
     >
       <ShoppingCart size={24} />
-      <span
-        className={twMerge(
-          'absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center',
-        )}
-      >
-        {cartItems}
-      </span>
+      {cartItems > 0 && (
+        <span
+          className={twMerge(
+            'absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center',
+            cartItemClassName,
+          )}
+        >
+          {cartItems}
+        </span>
+      )}
     </button>
   )
 }
