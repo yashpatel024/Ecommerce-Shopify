@@ -1,10 +1,41 @@
 import { getProduct } from '@/services/shopify/products'
 import Image from 'next/image'
 import type { ShopifyProduct } from '@/types/shopify.types'
+import { Metadata } from 'next'
 
 type ProductPageProps = {
   params: {
     handle: string
+  }
+}
+
+/*
+  Generate metadata for the product page
+*/
+export async function generateMetadata({
+  params,
+}: ProductPageProps): Promise<Metadata> {
+  const product = await getProduct(params.handle)
+
+  if (!product) {
+    return { title: 'Product not found' }
+  }
+
+  return {
+    title: product.title,
+    description: product.description,
+    openGraph: {
+      title: product.title,
+      description: product.description,
+      images: [
+        {
+          url: product.images[0].src,
+          width: 800,
+          height: 600,
+          alt: product.title,
+        },
+      ],
+    },
   }
 }
 
