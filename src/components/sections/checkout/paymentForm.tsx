@@ -73,7 +73,7 @@ export function PaymentForm({ product }: PaymentFormProps) {
         </div>
         {error && <div className="text-red-500 mb-4">{error}</div>}
         <Button
-          variant="primary"
+          variant="default"
           disabled={!stripe || isLoading}
           className="w-full mt-4"
           type="submit"
