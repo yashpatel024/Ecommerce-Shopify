@@ -1,25 +1,13 @@
 import CheckoutForm from '@/components/sections/checkout/checkoutForm'
 import type { ShopifyProduct } from '@/types/shopify.types'
-import { headers } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
+import { getHostUrl } from '@/lib/utils'
 
 type CheckoutPageProps = {
   params: {
     checkoutId: string
   }
-}
-
-// Get the host URL
-const getHostUrl = () => {
-  const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
-
-  const host =
-    process.env.NODE_ENV === 'production'
-      ? process.env.VERCEL_URL!
-      : 'localhost:3000'
-
-  return `${protocol}://${host}`
 }
 
 /**

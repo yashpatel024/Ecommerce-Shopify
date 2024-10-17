@@ -6,7 +6,7 @@ const BestSellers = async () => {
   const products: ShopifyProduct[] = await getProducts()
 
   return (
-    <section className="py-16">
+    <section className="">
       <h2 className="text-2xl font-bold mb-8">Bestsellers</h2>
       <div className="flex flex-row flex-wrap justify-center gap-4 md:gap-8">
         {products.map(

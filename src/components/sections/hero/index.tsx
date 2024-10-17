@@ -1,9 +1,9 @@
 'use client'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import ProductCarousel from '@/components/ui/shadcn/productCarousel'
+import ProductCarousel from '@/components/sections/carousel/productCarousel'
 import { type ShopifyProduct } from '@/types/shopify.types'
-import NewProduct from '../../cards/newProductCard'
+import NewProduct from '@/components/cards/newProductCard'
 
 //
 
@@ -20,8 +20,7 @@ export default function Hero() {
   }, [])
 
   return (
-    // Margin Top is 24 + 12 (Header), Paddign top is 8, md: 10
-    <section className="relative w-full mt-36 pt-8 md:pt-0 h-[100vh] flex items-start">
+    <section className="relative w-full pt-8 md:pt-0 h-[100vh] flex items-start">
       <div className="relative flex flex-col-reverse md:items-center lg:flex-row gap-4 w-full lg:px-12 lg:justify-center">
         {/* First column with 2 rows */}
         <div className="relative grid grid-rows-2 gap-4 md:grid-rows-1 md:grid-cols-2 lg:grid-cols-1 lg:h-full lg:w-1/3">

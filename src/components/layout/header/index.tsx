@@ -59,7 +59,7 @@ const Header = () => {
           className="hidden md:block"
         />
         <HeaderLogo />
-        <Cart cartItems={0} />
+        <Cart />
       </div>
       {/* Mobile menu Navigation bar */}
       <MobileMenu isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />

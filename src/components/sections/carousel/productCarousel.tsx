@@ -7,7 +7,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from '@/components/ui/shadcn/carousel'
+} from '@/components/sections/carousel/carousel'
 import Autoplay from 'embla-carousel-autoplay'
 import Image from 'next/image'
 import { motion } from 'framer-motion'

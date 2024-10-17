@@ -1,6 +1,10 @@
+'use client'
+
 import { ShoppingCart } from 'lucide-react'
 import { twMerge } from 'tailwind-merge'
-import { useCartOperations } from '@/hooks/useCartOperations'
+import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { getCartItemsCount } from '@/lib/session-store'
 
 interface CartIconProps {
   className?: string
@@ -11,8 +15,17 @@ export default function Cart({
   className = '',
   cartItemClassName = '',
 }: CartIconProps) {
-  const { getCartItemsCount } = useCartOperations()
-  const cartItems = getCartItemsCount()
+  const [cartItems, setCartItems] = useState(0)
+  const router = useRouter()
+
+  useEffect(() => {
+    const fetchCartItemsCount = async () => {
+      const count = await getCartItemsCount()
+      console.log('count', count)
+      setCartItems(count)
+    }
+    fetchCartItemsCount()
+  }, [])
 
   return (
     <button
@@ -20,6 +33,9 @@ export default function Cart({
         'py-2 w-10 h-10 flex items-center justify-center relative',
         className,
       )}
+      onClick={() => {
+        router.push('/cart')
+      }}
     >
       <ShoppingCart size={24} />
       {cartItems > 0 && (

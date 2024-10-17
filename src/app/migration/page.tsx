@@ -1,4 +1,5 @@
 'use client'
+import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 
 export default function MigrationPage() {
@@ -26,18 +27,20 @@ export default function MigrationPage() {
         WooCommerce to Shopify Migration
       </h1>
       <div className="space-x-4">
-        <button
+        <Button
           onClick={fetchWooProducts}
+          variant="secondary"
           className="bg-secondary-typography text-background-light font-bold py-2 px-4 rounded"
         >
           Fetch WooCommerce Products
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={migrateToShopify}
+          variant="default"
           className="bg-primary-typography text-background-light font-bold py-2 px-4 rounded"
         >
           Migrate to Shopify
-        </button>
+        </Button>
       </div>
       <div className="mt-4">
         <h2 className="text-primary-typography text-xl font-semibold">

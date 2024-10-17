@@ -1,6 +1,13 @@
+'use client'
+
 import { ShopifyProduct } from '@/types/shopify.types'
-import Button from '@/components/ui/button'
-import { CartItem } from '@/context/cartContext'
+import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
+
+type CartItem = {
+  handle: string
+  quantity: number
+}
 
 interface CartSummaryProps {
   cartItems: CartItem[]
@@ -14,6 +21,8 @@ export default function CartSummary({ cartItems, products }: CartSummaryProps) {
   }, 0)
   const tax = subtotal * 0.1 // Assuming 10% tax
   const total = subtotal + tax
+
+  const router = useRouter()
 
   return (
     <div className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
@@ -54,12 +63,9 @@ export default function CartSummary({ cartItems, products }: CartSummaryProps) {
         </div>
 
         <Button
-          variant="primary"
+          variant="default"
           className="w-full"
-          onClick={{
-            action: 'redirect',
-            path: '/checkout/',
-          }}
+          onClick={() => router.push('/checkout/')}
         >
           Proceed to Checkout
         </Button>

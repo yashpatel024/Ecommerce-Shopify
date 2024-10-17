@@ -1,21 +1,26 @@
+'use client'
+
 import Image from 'next/image'
 import { ShopifyProduct } from '@/types/shopify.types'
-import { useCartOperations } from '@/hooks/useCartOperations'
+import { useTransition } from 'react'
+import { updateCartItemQuantity, removeFromCart } from '@/app/actions/cart'
 
 interface CartItemProps {
   product: ShopifyProduct
   quantity: number
 }
 
-export default function CartItem({ product, quantity }: CartItemProps) {
-  const { updateQuantity, removeFromCart } = useCartOperations()
+export default function CartItems({ product, quantity }: CartItemProps) {
+  const [isPending, startTransition] = useTransition()
 
   const handleQuantityChange = (newQuantity: number) => {
-    updateQuantity(product.handle, Math.max(0, newQuantity))
+    startTransition(() =>
+      updateCartItemQuantity(product.handle, Math.max(0, newQuantity)),
+    )
   }
 
   const handleRemove = () => {
-    removeFromCart(product.handle)
+    startTransition(() => removeFromCart(product.handle))
   }
 
   return (
