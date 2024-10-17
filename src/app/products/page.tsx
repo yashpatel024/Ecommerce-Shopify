@@ -6,7 +6,7 @@ export default async function Products() {
   const products: ShopifyProduct[] = await getProducts()
 
   return (
-    <main className="flex flex-col items-center justify-center py-8">
+    <main className="flex flex-col items-center justify-center">
       <div className="flex flex-row flex-wrap gap-4 justify-center">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />

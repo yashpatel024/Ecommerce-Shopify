@@ -41,4 +41,20 @@ const createShopifyProduct = async (
   }
 }
 
-export { getProducts, getProduct, createShopifyProduct }
+const getProductsByHandles = async (
+  handles: string[],
+): Promise<ShopifyProduct[]> => {
+  try {
+    const products = await Promise.all(
+      handles.map((handle) => client.product.fetchByHandle(handle)),
+    )
+    return products
+      .filter(Boolean)
+      .map((product) => deserializeProduct(product))
+  } catch (error) {
+    console.error('Error fetching products by handles:', error)
+    return []
+  }
+}
+
+export { getProducts, getProduct, createShopifyProduct, getProductsByHandles }

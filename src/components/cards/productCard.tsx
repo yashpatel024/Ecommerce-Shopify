@@ -1,7 +1,10 @@
+'use client'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ShopifyProduct } from '@/types/shopify.types'
 import { Button } from '@/components/ui/button'
+import AddToCartButton from '@/components/sections/cart/addToCart'
+import { useRouter } from 'next/navigation'
 
 export interface ProductCardProps {
   product: ShopifyProduct
@@ -14,38 +17,43 @@ export default function ProductCard({ product }: ProductCardProps) {
   const productDescription = product.description
   const productPrice = product.variants[0].price.amount
 
+  const router = useRouter()
+
   return (
-    <div className="w-[30%] bg-white shadow-md rounded-xl p-4 flex flex-col gap-4 justify-between hover:shadow-lg">
-      <Image
-        src={imageSrc}
-        alt={imageAlt}
-        width={300}
-        height={300}
-        className="rounded-xl w-full h-250"
-      />
-      <Link href={`/product/${product.handle}`} className="cursor-pointer">
-        <h2 className="text-2xl font-bold text-secondary-typography">
-          {productTitle}
-        </h2>
-      </Link>
-
-      <p className="text-secondary-typography">{productDescription}</p>
-      {/* Show the variants of the product from product.variants[0] */}
-      <div className="flex justify-between items-end">
-        <p className="text-sm font-medium text-secondary-typography">
-          ${productPrice}
+    <div className="w-full sm:w-[48%] md:w-[30%] bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300">
+      <div className="relative aspect-square">
+        <Image
+          src={imageSrc}
+          alt={imageAlt}
+          layout="fill"
+          objectFit="cover"
+          className="transition-transform duration-300 hover:scale-105"
+        />
+      </div>
+      <div className="p-4 flex flex-col gap-2">
+        <Link href={`/product/${product.handle}`} className="cursor-pointer">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-800 hover:text-primary transition-colors duration-300">
+            {productTitle}
+          </h2>
+        </Link>
+        <p className="text-sm text-gray-600 line-clamp-2">
+          {productDescription}
         </p>
-
-        <Button
-          variant="primary"
-          className="mt-6"
-          onClick={{
-            action: 'redirect',
-            path: '/checkout/' + product.handle,
-          }}
-        >
-          Buy now
-        </Button>
+        <div className="mt-4 flex justify-between items-center">
+          <p className="text-lg font-bold text-primary">
+            ${parseFloat(productPrice).toFixed(2)}
+          </p>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => router.push('/checkout/' + product.handle)}
+            >
+              Buy now
+            </Button>
+            <AddToCartButton productHandle={product.handle} />
+          </div>
+        </div>
       </div>
     </div>
   )

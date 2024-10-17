@@ -1,23 +1,13 @@
 import CheckoutForm from '@/components/sections/checkout/checkoutForm'
 import type { ShopifyProduct } from '@/types/shopify.types'
-import { headers } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
+import { getHostUrl } from '@/lib/utils'
 
 type CheckoutPageProps = {
   params: {
     checkoutId: string
   }
-}
-
-// Get the host URL
-const getHostUrl = () => {
-  const host =
-    process.env.NODE_ENV === 'development'
-      ? 'http://localhost:3000'
-      : process.env.PRODUCTION_URL!
-
-  return host
 }
 
 /**
@@ -49,7 +39,7 @@ const CheckoutPage = async ({ params }: CheckoutPageProps) => {
   }
 
   return (
-    <section className="container py-16">
+    <section className="py-16">
       <h1 className="text-2xl font-bold mb-8">Checkout</h1>
       <Suspense fallback={<div>Loading...</div>}>
         <CheckoutForm product={productData} />
