@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import { render, fireEvent, screen } from '@testing-library/react'
-import Cart from './cart'
+import Cart from '.'
 import { useRouter } from 'next/navigation'
 import { getCartItemsCount } from '@/lib/session-store'
 
