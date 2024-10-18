@@ -21,7 +21,6 @@ export default function Cart({
   useEffect(() => {
     const fetchCartItemsCount = async () => {
       const count = await getCartItemsCount()
-      console.log('count', count)
       setCartItems(count)
     }
     fetchCartItemsCount()
