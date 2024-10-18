@@ -1,11 +1,12 @@
 import HamburgerMenu from '@/components/ui/icons/hamburgerMenu'
 import { NAVIGATION_LINKS, type NavigationLink } from '@/constants/navLinks'
 import Link from 'next/link'
+import { useEffect, useRef } from 'react'
 
 interface SideNavigationBarProps {
   isScrolled: boolean
   sidebarOpen: boolean
-  toggleSidebar: () => void
+  toggleSidebar: (setState?: boolean) => void
   activeSubmenu: number | null
   isAdjacentSidebarOpen: boolean
   toggleAdjacentSidebar: (index: number | null) => void
@@ -13,14 +14,36 @@ interface SideNavigationBarProps {
 
 export default function SideNavigationBar({
   isScrolled,
-  sidebarOpen = false,
+  sidebarOpen,
   toggleSidebar,
   activeSubmenu,
   isAdjacentSidebarOpen,
   toggleAdjacentSidebar,
 }: SideNavigationBarProps) {
+  const sideNavRef = useRef<HTMLDivElement>(null)
+
+  // Mouse Down event to check for handling clickOutSide of SideNavigation bar
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside)
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  // Handling Event if Click outside of Navigation bar - as closing the sidebar
+  function handleClickOutside(event: Event) {
+    if (
+      sideNavRef.current &&
+      !sideNavRef?.current?.contains(event.target as HTMLDivElement)
+    ) {
+      // Close the Sidebar - if Target Element is different than sidebar
+      toggleSidebar(false)
+    }
+  }
+
   return (
-    <div onMouseLeave={() => toggleAdjacentSidebar(null)}>
+    <div ref={sideNavRef}>
       <div
         className={`fixed z-20 top-0 left-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'

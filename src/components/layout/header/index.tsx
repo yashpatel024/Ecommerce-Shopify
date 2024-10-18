@@ -21,8 +21,13 @@ const Header = () => {
   const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null)
   const [isAdjacentSidebarOpen, setIsAdjacentSidebarOpen] = useState(false)
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen)
+  const toggleSidebar = (setState?: boolean) => {
+    if (typeof setState === 'boolean') {
+      setIsSidebarOpen(setState)
+    } else {
+      setIsSidebarOpen((prevState) => !prevState)
+    }
+
     if (isSidebarOpen == false) {
       setIsAdjacentSidebarOpen(false)
       setActiveSubmenu(null)
