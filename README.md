@@ -96,24 +96,4 @@ VERCEL_URL=your_vercel_url
 - There are some linter errors in the test files that need to be addressed.
 - The `next` package has a known high severity vulnerability that needs to be investigated and resolved.
 
-## Project Structure
-
-src/
-├── app/
-│ ├── api/
-│ │ ├── product/
-│ │ │ └── route.ts
-│ ├── layout.tsx
-│ └── page.tsx
-├── components/
-│ ├── cards/
-│ ├── sections/
-│ │ ├── cart/
-│ │ └── checkout/
-│ └── ui/
-├── lib/
-├── services/
-│ └── shopify/
-└── utils/
-
-This project is continuously evolving, with a focus on creating a robust, performant, and SEO-friendly e-commerce platform using modern web technologies.
+### This project is continuously evolving, with a focus on creating a robust, performant, and SEO-friendly e-commerce platform using modern web technologies.
