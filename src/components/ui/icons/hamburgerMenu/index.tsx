@@ -17,7 +17,7 @@ export default function HamburgerMenu({
     <button
       onClick={toggleSidebar}
       className={twMerge(
-        'py-2 w-10 h-10 flex items-center justify-center',
+        'hamburger-menu py-2 w-10 h-10 flex items-center justify-center',
         className,
       )}
     >

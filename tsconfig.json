@@ -27,7 +27,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "jest.config.js",
-    "jest.setup.js"
+    "jest.setup.js",
+    "cypress/tsconfig.json"
   ],
   "exclude": ["node_modules"]
 }
