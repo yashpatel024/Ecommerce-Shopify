@@ -1,23 +1,23 @@
-'use client'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ShopifyProduct } from '@/types/shopify.types'
 import { Button } from '@/components/ui/button'
 import AddToCartButton from '@/components/sections/cart/addToCart'
-import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/navigation'
 
 export interface ProductCardProps {
   product: ShopifyProduct
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const imageSrc = product.images[0].src
-  const imageAlt = product.images[0].alt
+  const imageSrc = product.images[0].src || product.variants[0].image.url
+  const imageAlt = product.images[0].altText || product.title
   const productTitle = product.title
   const productDescription = product.description
   const productPrice = product.variants[0].price.amount
+  const productPriceCurrency = product.variants[0].price.currencyCode
 
-  const router = useRouter()
+  // const router = useRouter()
 
   return (
     <div className="w-full sm:w-[48%] md:w-[30%] bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -41,16 +41,16 @@ export default function ProductCard({ product }: ProductCardProps) {
         </p>
         <div className="mt-4 flex justify-between items-center">
           <p className="text-lg font-bold text-primary">
-            ${parseFloat(productPrice).toFixed(2)}
+            {productPriceCurrency} {productPrice}
           </p>
           <div className="flex gap-2">
-            <Button
+            {/* <Button
               variant="outline"
               size="sm"
               onClick={() => router.push('/checkout/' + product.handle)}
             >
               Buy now
-            </Button>
+            </Button> */}
             <AddToCartButton productHandle={product.handle} />
           </div>
         </div>

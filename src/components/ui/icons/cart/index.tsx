@@ -4,7 +4,6 @@ import { ShoppingCart } from 'lucide-react'
 import { twMerge } from 'tailwind-merge'
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { getCartItemsCount } from '@/lib/session-store'
 
 interface CartIconProps {
   className?: string
@@ -20,7 +19,8 @@ export default function Cart({
 
   useEffect(() => {
     const fetchCartItemsCount = async () => {
-      const count = await getCartItemsCount()
+      // const count = await getCartItemsCount()
+      const count = 0
       setCartItems(count)
     }
     fetchCartItemsCount()

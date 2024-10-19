@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { getCart, setCartItem, removeCartItem } from '@/lib/session-store'
+// import { getCart, setCartItem, removeCartItem } from '@/lib/session-store'
 
 interface AddToCartButtonProps {
   productHandle: string
@@ -16,7 +16,8 @@ export default function AddToCartButton({
 
   useEffect(() => {
     const fetchCartItem = async () => {
-      const cart = await getCart()
+      // const cart = await getCart()
+      const cart = null
       setQuantity(cart ? cart[productHandle] || 0 : 0)
     }
     fetchCartItem()
@@ -24,7 +25,7 @@ export default function AddToCartButton({
 
   const handleAddToCart = async () => {
     setIsLoading(true)
-    await setCartItem(productHandle, 1)
+    // await setCartItem(productHandle, 1)
     setQuantity(1)
     setIsLoading(false)
   }
@@ -32,10 +33,10 @@ export default function AddToCartButton({
   const handleUpdateQuantity = async (newQuantity: number) => {
     setIsLoading(true)
     if (newQuantity > 0) {
-      await setCartItem(productHandle, newQuantity)
+      // await setCartItem(productHandle, newQuantity)
       setQuantity(newQuantity)
     } else {
-      await removeCartItem(productHandle)
+      // await removeCartItem(productHandle)
       setQuantity(0)
     }
     setIsLoading(false)

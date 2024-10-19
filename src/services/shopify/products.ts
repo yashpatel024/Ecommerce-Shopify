@@ -7,8 +7,9 @@ import { deserializeProduct } from '@/utils/product/product-deserializer'
  */
 const getProducts = async (): Promise<ShopifyProduct[]> => {
   try {
-    const fetchedProducts: any[] = await client.product.fetchAll()
-    return fetchedProducts.map((product: any) => deserializeProduct(product))
+    const fetchedProducts: ShopifyProduct[] = await client.product.fetchAll()
+    // return fetchedProducts.map((product: any) => deserializeProduct(product))
+    return fetchedProducts
   } catch (error) {
     console.error('Error fetching products:', error)
     return []
