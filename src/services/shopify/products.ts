@@ -1,6 +1,6 @@
-import { adminClient, client } from '@/utils/config/shopify'
+import { adminClient, client } from '@/lib/config/shopify'
 import type { ShopifyProduct } from '@/types/shopify.types'
-import { deserializeProduct } from '@/utils/product/product-deserializer'
+import { deserializeProduct } from '@/lib/shopify/product/product-deserializer'
 
 /**
  * Get all products - Shopify Buy API

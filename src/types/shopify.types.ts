@@ -1,4 +1,4 @@
-import { Product } from 'shopify-buy'
+import { Cart, CartLine, Product, ProductVariant } from 'shopify-buy'
 
 /**
  * Cart Interfaces
@@ -91,15 +91,6 @@ export interface ShopifyVariant {
   image: ShopifyImage
 }
 
-export interface ProductVariant {
-  id: string
-  title: string
-  availableForSale: boolean
-  selectedOptions: {
-    name: string
-    value: string
-  }[]
-  price: Money
-}
+export interface ShopifyProductVariant extends ProductVariant {}
 
 export interface ShopifyProduct extends Product {}

@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { ShopifyProduct } from '@/types/shopify.types'
 import { useTransition } from 'react'
-import { updateCartItemQuantity, removeFromCart } from '@/app/actions/cart'
+// import { updateCartItemQuantity, removeFromCart } from '@/app/actions/cart'
 
 interface CartItemProps {
   product: ShopifyProduct

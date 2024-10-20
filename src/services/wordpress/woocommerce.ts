@@ -1,4 +1,4 @@
-import { client as woocommerceClient } from '@/utils/config/woocommerce'
+import { client as woocommerceClient } from '@/lib/config/woocommerce'
 import type { WooCommerceProduct } from '@/types/woocommerce.types'
 
 /**
