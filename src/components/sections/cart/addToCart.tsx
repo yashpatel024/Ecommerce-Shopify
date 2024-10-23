@@ -15,10 +15,17 @@ export default function AddToCartButton({ variantId }: AddToCartButtonProps) {
 
   useEffect(() => {
     const fetchCartItem = async () => {
-      setQuantity(cart ? cart.totalQuantity || 0 : 0)
+      if (cart) {
+        const cartItem = cart.lines?.find(
+          (item) => item.merchandise.id === variantId,
+        )
+        setQuantity(cartItem ? cartItem.quantity : 0)
+      } else {
+        setQuantity(0)
+      }
     }
     fetchCartItem()
-  }, [cart])
+  }, [cart, variantId])
 
   const handleAddToCart = async () => {
     setIsLoading(true)

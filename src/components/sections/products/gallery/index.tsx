@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
-import { ShopifyImage } from '@/types/shopify.types'
+import { ShopifyImage, ShopifyProduct } from '@/types/shopify.types'
 import {
   Carousel,
   CarouselContent,
@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/carousel'
 
 interface ProductGalleryProps {
-  images: ShopifyImage[]
+  images: ShopifyProduct['images']
 }
 
 export default function ProductGallery({ images }: ProductGalleryProps) {
@@ -25,7 +25,7 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
       <div className="relative aspect-square w-full overflow-hidden rounded-lg">
         <Image
           src={images[selectedImage].src}
-          alt={images[selectedImage].alt || 'Product image'}
+          alt={images[selectedImage].altText || 'Product image'}
           fill
           className="object-cover object-center"
           priority
@@ -55,7 +55,7 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
               >
                 <Image
                   src={image.src}
-                  alt={image.alt || 'Product thumbnail'}
+                  alt={image.altText || 'Product thumbnail'}
                   fill
                   className="object-cover object-center"
                   sizes="(min-width: 1024px) 15vw, 25vw"

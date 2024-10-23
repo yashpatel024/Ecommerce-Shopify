@@ -86,7 +86,6 @@ export function CartProvider({
     let cartId = initialCartId || localStorage.getItem('cartId')
 
     if (cartId) {
-      // console.log('cardId', cartId)
       try {
         const existingCartCheckout: Checkout =
           await client.checkout.fetch(cartId)
@@ -154,14 +153,14 @@ export function CartProvider({
     }
   }
 
+  const getLineItemId = (variantId: string) => {
+    return cart?.lines?.find((item) => item.merchandise.id === variantId)?.id
+  }
+
   const addItem = async (variantId: string, quantity: number) => {
     if (!cart) return
     setLoading(true)
     try {
-      // console.log('variantId', variantId)
-      // console.log('quantity', variantId)
-      // console.log('cart', cart)
-
       const updatedCartCheckout: Checkout = await client.checkout.addLineItems(
         cart.id,
         [{ variantId: variantId, quantity: quantity }],
@@ -175,10 +174,15 @@ export function CartProvider({
     }
   }
 
-  const removeItem = async (lineItemId: string) => {
+  const removeItem = async (variantId: string) => {
     if (!cart) return
     setLoading(true)
     try {
+      // On update, the Cart Product Checkout Id is the lineItemId
+      const lineItemId = getLineItemId(variantId)
+
+      if (!lineItemId) return
+
       const updatedCartCheckout: Checkout =
         await client.checkout.removeLineItems(cart.id, [lineItemId])
       setCart(reshapeCart(updatedCartCheckout))
@@ -190,11 +194,14 @@ export function CartProvider({
     }
   }
 
-  const updateItemQuantity = async (lineItemId: string, quantity: number) => {
+  const updateItemQuantity = async (variantId: string, quantity: number) => {
     if (!cart) return
     setLoading(true)
     try {
-      // console.log('variantId', lineItemId)
+      // On update, the Cart Product Checkout Id is the lineItemId
+      const lineItemId = getLineItemId(variantId)
+
+      if (!lineItemId) return
 
       if (quantity === 0) {
         await removeItem(lineItemId)
@@ -203,6 +210,7 @@ export function CartProvider({
           await client.checkout.updateLineItems(cart.id, [
             { id: lineItemId, quantity: quantity },
           ])
+
         setCart(reshapeCart(updatedCartCheckout))
       }
       revalidateTag(TAGS.cart)
