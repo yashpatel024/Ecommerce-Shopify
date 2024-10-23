@@ -7,7 +7,7 @@ import { Shopify } from '@shopify/shopify-api'
  * @param wooProduct
  * @returns
  */
-export const transformProduct = (wooProduct: any): ShopifyProduct => {
+export const transformProduct = (wooProduct: any): any => {
   // console.log({
   //   id: wooProduct.id,
   //   handle: wooProduct.sku,

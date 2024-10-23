@@ -15,10 +15,16 @@ const config: Config = {
         'secondary-typography': '#4B4B4B',
         'light-typography': '#FAF8F6',
         'light-secondary-typography': '#A99C87',
-        primary: '#C8A165',
-        secondary: '##F3F4F0',
-        background: '#CAA46A',
-        foreground: '#fff',
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',

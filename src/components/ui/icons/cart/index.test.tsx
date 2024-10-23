@@ -2,7 +2,7 @@ import '@testing-library/jest-dom'
 import { render, fireEvent, screen } from '@testing-library/react'
 import Cart from '.'
 import { useRouter } from 'next/navigation'
-import { getCartItemsCount } from '@/lib/session-store'
+import { useCart } from '@/context/cartContext'
 
 // Mock the useRouter hook
 jest.mock('next/navigation', () => ({
@@ -10,8 +10,8 @@ jest.mock('next/navigation', () => ({
 }))
 
 // Mock the getCartItemsCount function
-jest.mock('@/lib/session-store', () => ({
-  getCartItemsCount: jest.fn().mockResolvedValue(0),
+jest.mock('@/context/cartContext', () => ({
+  useCart: jest.fn(),
 }))
 
 describe('Cart Component', () => {
@@ -20,6 +20,7 @@ describe('Cart Component', () => {
 
   beforeEach(() => {
     ;(useRouter as jest.Mock).mockReturnValue({ push: mockPush })
+    ;(useCart as jest.Mock).mockReturnValue({ cart: { totalQuantity: 0 } })
   })
 
   test('renders without crashing', () => {
@@ -28,10 +29,8 @@ describe('Cart Component', () => {
   })
 
   test('displays cart item count', async () => {
-    ;(getCartItemsCount as jest.Mock).mockResolvedValue(5)
+    ;(useCart as jest.Mock).mockReturnValue({ cart: { totalQuantity: 5 } })
     render(<Cart />)
-
-    // Wait for the cart item count to be displayed
     expect(await screen.findByText('5')).toBeInTheDocument()
   })
 

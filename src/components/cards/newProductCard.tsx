@@ -37,7 +37,7 @@ export default function NewProduct({ product, variant }: NewProductProps) {
           >
             <Image
               src={product.images[0].src}
-              alt={product.images[0].alt}
+              alt={product.images[0].altText || product.title}
               width={400}
               height={400}
               className="w-full h-auto lg:h-40 lg:object-scale-down"
@@ -79,7 +79,7 @@ export default function NewProduct({ product, variant }: NewProductProps) {
           >
             <Image
               src={product.images[0].src}
-              alt={product.images[0].alt}
+              alt={product.images[0].altText || product.title}
               width={400}
               height={400}
               className="w-full h-auto lg:h-40 lg:object-scale-down"

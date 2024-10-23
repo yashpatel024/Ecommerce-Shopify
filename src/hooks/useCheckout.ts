@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { PaymentMethod } from '@stripe/stripe-js'
 import type { ShopifyProduct } from '@/types/shopify.types'
+import { getHostUrl } from '@/lib/utils'
 
 export function useCheckout() {
   const [error, setError] = useState<string | null>(null)
@@ -14,9 +15,10 @@ export function useCheckout() {
   ) => {
     setIsLoading(true)
     setError(null)
+    const hostUrl = getHostUrl()
 
     try {
-      const response = await fetch('/api/orders', {
+      const response = await fetch(`${hostUrl}/api/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

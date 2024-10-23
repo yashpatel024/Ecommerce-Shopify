@@ -1,14 +1,15 @@
-import { adminClient, client } from '@/utils/config/shopify'
+import { adminClient, client } from '@/lib/config/shopify'
 import type { ShopifyProduct } from '@/types/shopify.types'
-import { deserializeProduct } from '@/utils/product/product-deserializer'
+import { deserializeProduct } from '@/lib/shopify/product/product-deserializer'
 
 /**
  * Get all products - Shopify Buy API
  */
 const getProducts = async (): Promise<ShopifyProduct[]> => {
   try {
-    const fetchedProducts: any[] = await client.product.fetchAll()
-    return fetchedProducts.map((product: any) => deserializeProduct(product))
+    const fetchedProducts: ShopifyProduct[] = await client.product.fetchAll()
+    // return fetchedProducts.map((product: any) => deserializeProduct(product))
+    return fetchedProducts
   } catch (error) {
     console.error('Error fetching products:', error)
     return []

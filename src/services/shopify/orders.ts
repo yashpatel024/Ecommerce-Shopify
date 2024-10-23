@@ -1,5 +1,5 @@
 import type { ShopifyProduct } from '@/types/shopify.types'
-import { client } from '@/utils/config/shopify'
+import { client } from '@/lib/config/shopify'
 
 const createOrder = async (order: ShopifyProduct[]) => {
   try {
