@@ -4,15 +4,17 @@ import { useEffect, useState } from 'react'
 import ProductCarousel from '@/components/sections/carousel/productCarousel'
 import { type ShopifyProduct } from '@/types/shopify.types'
 import NewProduct from '@/components/cards/newProductCard'
+import { getHostUrl } from '@/lib/utils'
 
 //
 
 export default function Hero() {
   const [products, setProducts] = useState<ShopifyProduct[]>([])
+  const hostUrl = getHostUrl()
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await fetch('/api/products')
+      const response = await fetch(`${hostUrl}/api/products`)
       const data = await response.json()
       setProducts(data.products)
     }

@@ -1,13 +1,15 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
+import { getHostUrl } from '@/lib/utils'
 
 export default function MigrationPage() {
   const [status, setStatus] = useState('')
+  const hostUrl = getHostUrl()
 
   const fetchWooProducts = async () => {
     setStatus('Fetching WooCommerce products...')
-    const response = await fetch('/api/woo-to-shopify')
+    const response = await fetch(hostUrl + '/api/woo-to-shopify')
     const data = await response.json()
     setStatus(
       `Fetched ${data.count} products from WooCommerce \n Total Pages: ${data.totalPages} `,
@@ -16,7 +18,9 @@ export default function MigrationPage() {
 
   const migrateToShopify = async () => {
     setStatus('Starting migration...')
-    const response = await fetch('/api/woo-to-shopify', { method: 'POST' })
+    const response = await fetch(hostUrl + '/api/woo-to-shopify', {
+      method: 'POST',
+    })
     const data = await response.json()
     setStatus(data.message || data.error || 'Migration failed')
   }

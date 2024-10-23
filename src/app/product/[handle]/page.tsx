@@ -17,9 +17,10 @@ type ProductPageProps = {
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
+  const hostUrl = getHostUrl()
   try {
     const response = await fetch(
-      `${getHostUrl()}/api/products?handles=${params.handle}`,
+      `${hostUrl}/api/products?handles=${params.handle}`,
       {
         next: { revalidate: 60 }, // Cache for 60 seconds
       },
@@ -60,10 +61,10 @@ export async function generateMetadata({
 
 export default async function Product({ params }: ProductPageProps) {
   let product: ShopifyProduct | null = null
-
+  const hostUrl = getHostUrl()
   try {
     const response = await fetch(
-      `${getHostUrl()}/api/products?handles=${params.handle}`,
+      `${hostUrl}/api/products?handles=${params.handle}`,
       {
         next: { revalidate: 60 }, // Cache for 60 seconds
       },

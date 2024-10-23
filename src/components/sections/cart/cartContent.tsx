@@ -11,6 +11,7 @@ export default function CartContent() {
   const { cart } = useCart()
   const [products, setProducts] = useState<ShopifyProduct[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const hostUrl = getHostUrl()
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -28,7 +29,7 @@ export default function CartContent() {
 
         // Fetch products data using REST API
         const response = await fetch(
-          `${getHostUrl()}/api/products?handles=${productHandles.join(',')}`,
+          `${hostUrl}/api/products?handles=${productHandles.join(',')}`,
         )
 
         if (!response.ok) {

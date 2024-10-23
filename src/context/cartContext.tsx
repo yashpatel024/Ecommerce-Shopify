@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import type { Checkout } from 'shopify-buy'
 import { revalidateTag } from 'next/cache'
+import { getHostUrl } from '@/lib/utils'
 
 const TAGS = {
   collections: 'collections',
@@ -76,6 +77,7 @@ export function CartProvider({
 }) {
   const [cart, setCart] = useState<Cart>()
   const [loading, setLoading] = useState(true)
+  const hostUrl = getHostUrl()
 
   useEffect(() => {
     const initializeCart = async () => {
@@ -107,7 +109,7 @@ export function CartProvider({
 
   const createNewCart = async () => {
     try {
-      const response = await fetch('/api/cart', {
+      const response = await fetch(`${hostUrl}/api/cart`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'create' }),
@@ -172,7 +174,7 @@ export function CartProvider({
     setLoading(true)
 
     try {
-      const response = await fetch('/api/cart', {
+      const response = await fetch(`${hostUrl}/api/cart`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -202,7 +204,7 @@ export function CartProvider({
 
       if (!lineItemId) return
 
-      const response = await fetch('/api/cart', {
+      const response = await fetch(`${hostUrl}/api/cart`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -236,7 +238,7 @@ export function CartProvider({
       if (quantity === 0) {
         await removeItem(lineItemId)
       } else {
-        const response = await fetch('/api/cart', {
+        const response = await fetch(`${hostUrl}/api/cart`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
