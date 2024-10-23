@@ -49,6 +49,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <div className="flex gap-2">
             <Button
               variant="outline"
+              className="hover:bg-primary hover:text-light-typography"
               size="sm"
               onClick={() => router.push(`/product/${product.handle}`)}
             >
