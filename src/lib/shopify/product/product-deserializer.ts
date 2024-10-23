@@ -6,6 +6,7 @@ import type {
 
 export const deserializeProduct = (product: any): ShopifyProduct => {
   return {
+    ...product,
     id: product.id.toString(),
     title: product.title.toString(),
     description: product.description.toString(),

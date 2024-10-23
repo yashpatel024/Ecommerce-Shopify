@@ -2,6 +2,7 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { useCheckout } from '@/hooks/useCheckout'
 import type { ShopifyProduct } from '@/types/shopify.types'
 import { Button } from '@/components/ui/button'
+import { useCart } from '@/context/cartContext'
 
 interface PaymentFormProps {
   product: ShopifyProduct
@@ -11,6 +12,7 @@ export function PaymentForm({ product }: PaymentFormProps) {
   const stripe = useStripe()
   const elements = useElements()
   const { handlePayment, error, isLoading } = useCheckout()
+  const { cart } = useCart()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -80,7 +82,7 @@ export function PaymentForm({ product }: PaymentFormProps) {
         >
           {isLoading
             ? 'Processing...'
-            : `Pay $${(product.price * 1.0).toFixed(2)}`}
+            : `Pay $${(cart?.cost?.totalAmount?.amount || 0 * 1.0).toFixed(2)}`}
         </Button>
       </form>
     </div>

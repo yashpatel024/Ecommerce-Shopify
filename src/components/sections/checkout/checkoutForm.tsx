@@ -12,6 +12,7 @@ interface CheckoutFormProps {
 
 export default function CheckoutForm({ product }: CheckoutFormProps) {
   return (
+    //TODO: Dynamic Price based on Cart
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       <ProductSummary product={product} />
       <Elements stripe={stripePromise}>

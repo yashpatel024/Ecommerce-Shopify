@@ -1,7 +1,6 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
-import { client } from '@/lib/config/shopify'
 import type { Checkout } from 'shopify-buy'
 import { revalidateTag } from 'next/cache'
 
@@ -79,34 +78,45 @@ export function CartProvider({
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    initializeCart()
-  }, [])
+    const initializeCart = async () => {
+      const cartId = initialCartId || localStorage.getItem('cartId')
 
-  const initializeCart = async () => {
-    let cartId = initialCartId || localStorage.getItem('cartId')
+      if (cartId) {
+        try {
+          const response = await fetch('/api/cart', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'fetch', cartId }),
+          })
 
-    if (cartId) {
-      try {
-        const existingCartCheckout: Checkout =
-          await client.checkout.fetch(cartId)
-        // console.log('createnewCart - checkout', existingCartCheckout)
-
-        setCart(reshapeCart(existingCartCheckout))
-      } catch (error) {
-        console.error('Error fetching cart:', error)
+          if (!response.ok) throw new Error('Failed to fetch cart')
+          const data = await response.json()
+          setCart(reshapeCart(data))
+        } catch (error) {
+          console.error('Error fetching cart:', error)
+          await createNewCart()
+        }
+      } else {
         await createNewCart()
       }
-    } else {
-      await createNewCart()
+      setLoading(false)
     }
-    setLoading(false)
-  }
+
+    initializeCart()
+  }, [initialCartId])
 
   const createNewCart = async () => {
     try {
-      const newCartCheckout: Checkout = await client.checkout.create()
-      setCart(reshapeCart(newCartCheckout))
-      localStorage.setItem('cartId', newCartCheckout.id)
+      const response = await fetch('/api/cart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'create' }),
+      })
+
+      if (!response.ok) throw new Error('Failed to create cart')
+      const newCart = await response.json()
+      setCart(reshapeCart(newCart))
+      localStorage.setItem('cartId', newCart.id)
     } catch (error) {
       console.error('Error creating new cart:', error)
     }
@@ -160,13 +170,22 @@ export function CartProvider({
   const addItem = async (variantId: string, quantity: number) => {
     if (!cart) return
     setLoading(true)
+
     try {
-      const updatedCartCheckout: Checkout = await client.checkout.addLineItems(
-        cart.id,
-        [{ variantId: variantId, quantity: quantity }],
-      )
-      setCart(reshapeCart(updatedCartCheckout))
-      revalidateTag(TAGS.cart)
+      const response = await fetch('/api/cart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'addItem',
+          cartId: cart.id,
+          variantId,
+          quantity,
+        }),
+      })
+
+      if (!response.ok) throw new Error('Failed to add item')
+      const updatedCart = await response.json()
+      setCart(reshapeCart(updatedCart))
     } catch (error) {
       console.error('Error adding item to cart:', error)
     } finally {
@@ -183,8 +202,19 @@ export function CartProvider({
 
       if (!lineItemId) return
 
-      const updatedCartCheckout: Checkout =
-        await client.checkout.removeLineItems(cart.id, [lineItemId])
+      const response = await fetch('/api/cart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'removeItem',
+          cartId: cart.id,
+          variantId: lineItemId,
+          quantity: 0,
+        }),
+      })
+
+      if (!response.ok) throw new Error('Failed to remove item')
+      const updatedCartCheckout = await response.json()
       setCart(reshapeCart(updatedCartCheckout))
       revalidateTag(TAGS.cart)
     } catch (error) {
@@ -206,10 +236,19 @@ export function CartProvider({
       if (quantity === 0) {
         await removeItem(lineItemId)
       } else {
-        const updatedCartCheckout: Checkout =
-          await client.checkout.updateLineItems(cart.id, [
-            { id: lineItemId, quantity: quantity },
-          ])
+        const response = await fetch('/api/cart', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'updateItem',
+            cartId: cart.id,
+            variantId: lineItemId,
+            quantity: quantity,
+          }),
+        })
+
+        if (!response.ok) throw new Error('Failed to update item')
+        const updatedCartCheckout = await response.json()
 
         setCart(reshapeCart(updatedCartCheckout))
       }

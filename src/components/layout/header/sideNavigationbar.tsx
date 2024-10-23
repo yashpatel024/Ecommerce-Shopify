@@ -24,23 +24,21 @@ export default function SideNavigationBar({
 
   // Mouse Down event to check for handling clickOutSide of SideNavigation bar
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside)
+    // Move function inside useEffect
+    function handleClickOutside(event: Event) {
+      if (
+        sideNavRef.current &&
+        !sideNavRef?.current?.contains(event.target as HTMLDivElement)
+      ) {
+        toggleSidebar(false)
+      }
+    }
 
+    document.addEventListener('mousedown', handleClickOutside)
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [])
-
-  // Handling Event if Click outside of Navigation bar - as closing the sidebar
-  function handleClickOutside(event: Event) {
-    if (
-      sideNavRef.current &&
-      !sideNavRef?.current?.contains(event.target as HTMLDivElement)
-    ) {
-      // Close the Sidebar - if Target Element is different than sidebar
-      toggleSidebar(false)
-    }
-  }
+  }, [sidebarOpen, toggleSidebar])
 
   return (
     <div ref={sideNavRef}>

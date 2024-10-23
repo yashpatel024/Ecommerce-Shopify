@@ -1,9 +1,9 @@
-import { getProduct } from '@/services/shopify/products'
 import { Metadata } from 'next'
 import ProductGallery from '@/components/sections/products/gallery'
 import ProductInfo from '@/components/sections/products/info'
 import type { ShopifyProduct } from '@/types/shopify.types'
 import { notFound } from 'next/navigation'
+import { getHostUrl } from '@/lib/utils'
 
 type ProductPageProps = {
   params: {
@@ -17,35 +17,70 @@ type ProductPageProps = {
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
-  const product = await getProduct(params.handle)
+  try {
+    const response = await fetch(
+      `${getHostUrl()}/api/products?handles=${params.handle}`,
+      {
+        next: { revalidate: 60 }, // Cache for 60 seconds
+      },
+    )
 
-  if (!product) {
-    return { title: 'Product not found' }
-  }
+    if (!response.ok) {
+      return { title: 'Product not found' }
+    }
 
-  return {
-    title: product.title,
-    description: product.description,
-    openGraph: {
+    const data = await response.json()
+    const product = data.products[0]
+
+    if (!product) {
+      return { title: 'Product not found' }
+    }
+
+    return {
       title: product.title,
       description: product.description,
-      images: [
-        {
-          url: product.images[0].src,
-          width: 800,
-          height: 600,
-          alt: product.title,
-        },
-      ],
-    },
+      openGraph: {
+        title: product.title,
+        description: product.description,
+        images: [
+          {
+            url: product.images[0].src,
+            width: 800,
+            height: 600,
+            alt: product.title,
+          },
+        ],
+      },
+    }
+  } catch (error) {
+    console.error('Error fetching product metadata:', error)
+    return { title: 'Product not found' }
   }
 }
 
 export default async function Product({ params }: ProductPageProps) {
-  // Fetch the product data from Shopify-Buy API
-  const productData: ShopifyProduct | null = await getProduct(params.handle)
+  let product: ShopifyProduct | null = null
 
-  if (!productData) {
+  try {
+    const response = await fetch(
+      `${getHostUrl()}/api/products?handles=${params.handle}`,
+      {
+        next: { revalidate: 60 }, // Cache for 60 seconds
+      },
+    )
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch product')
+    }
+
+    const data = await response.json()
+    product = data.products[0]
+  } catch (error) {
+    console.error('Error fetching product:', error)
+    return notFound()
+  }
+
+  if (!product) {
     return notFound()
   }
 
@@ -54,10 +89,10 @@ export default async function Product({ params }: ProductPageProps) {
       <div className="mx-auto max-w-2xl lg:max-w-none">
         <div className="pb-20 pt-6 lg:grid lg:grid-cols-2 lg:gap-x-8">
           {/* Product Gallery */}
-          <ProductGallery images={productData.images} />
+          <ProductGallery images={product.images} />
 
           {/* Product Info */}
-          <ProductInfo product={productData} />
+          <ProductInfo product={product} />
         </div>
       </div>
     </div>
