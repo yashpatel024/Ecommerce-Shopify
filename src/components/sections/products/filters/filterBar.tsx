@@ -11,7 +11,8 @@ export default function FilterBar({ onFilterChange }: FilterBarProps) {
   const [filters, setFilters] = useState<Record<string, string[]>>({
     category: [],
     price: [],
-    color: [],
+    brand: [],
+    size: [],
   })
 
   const handleFilterChange = (type: string, value: string) => {
@@ -32,7 +33,14 @@ export default function FilterBar({ onFilterChange }: FilterBarProps) {
     <div className="space-y-4 p-4 bg-white rounded-lg shadow-sm">
       <FilterItem
         label="Category"
-        options={['Furniture', 'Decor', 'Lighting', 'Storage']}
+        options={[
+          'Complete Skateboards',
+          'Decks',
+          'Trucks',
+          'Wheels',
+          'Bearings',
+          'Hardware',
+        ]}
         selectedOptions={filters.category}
         onChange={(value) => handleFilterChange('category', value)}
       />
@@ -43,10 +51,23 @@ export default function FilterBar({ onFilterChange }: FilterBarProps) {
         onChange={(value) => handleFilterChange('price', value)}
       />
       <FilterItem
-        label="Color"
-        options={['Black', 'White', 'Brown', 'Gray', 'Blue']}
-        selectedOptions={filters.color}
-        onChange={(value) => handleFilterChange('color', value)}
+        label="Brand"
+        options={[
+          'Element',
+          'Santa Cruz',
+          'Baker',
+          'Independent',
+          'Spitfire',
+          'Bones',
+        ]}
+        selectedOptions={filters.brand}
+        onChange={(value) => handleFilterChange('brand', value)}
+      />
+      <FilterItem
+        label="Deck Size"
+        options={['7.75"', '8.0"', '8.25"', '8.5"', '8.75"']}
+        selectedOptions={filters.size}
+        onChange={(value) => handleFilterChange('size', value)}
       />
     </div>
   )

@@ -12,18 +12,25 @@ const inter = Inter({ subsets: ['latin'] })
   Set the metadata for the entire app
 */
 export const metadata: Metadata = {
-  title: 'Bravely - Furniture Store',
+  title: 'Bravely - Skateboard Store',
   description:
-    'A beautiful and modern e-commerce store for high-quality furniture',
-  keywords: ['furniture', 'home decor', 'modern furniture', 'interior design'],
-  authors: [{ name: 'Bravely Team' }],
-  creator: 'Bravely Furniture',
-  publisher: 'Bravely Furniture',
+    'A modern e-commerce store for premium skateboards and accessories',
+  keywords: [
+    'skateboard',
+    'skate gear',
+    'decks',
+    'trucks',
+    'wheels',
+    'bearings',
+  ],
+  authors: [{ name: 'Shredz Team' }],
+  creator: 'Shredz Skateboards',
+  publisher: 'Shredz Skateboards',
   openGraph: {
-    title: 'Bravely - Modern Furniture Store',
-    description: 'Discover beautiful, high-quality furniture for your home',
+    title: 'Shredz - Premium Skateboard Store',
+    description: 'Discover premium skateboards and gear for every style',
     url: process.env.NEXT_PUBLIC_URL!,
-    siteName: 'Bravely Furniture',
+    siteName: 'Shredz Skateboards',
     images: [
       {
         url: process.env.NEXT_PUBLIC_UR + '/og-image.jpg',
@@ -36,8 +43,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Bravely - Modern Furniture Store',
-    description: 'Discover beautiful, high-quality furniture for your home',
+    title: 'Shredz - Premium Skateboard Store',
+    description: 'Discover premium skateboards and gear for every style',
     images: [process.env.NEXT_PUBLIC_URL + '/twitter-image.jpg'],
   },
   viewport: 'width=device-width, initial-scale=1',
