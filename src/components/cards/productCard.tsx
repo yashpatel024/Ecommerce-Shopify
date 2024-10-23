@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { ShopifyProduct } from '@/types/shopify.types'
 import { Button } from '@/components/ui/button'
 // import AddToCartButton from '@/components/sections/cart/addToCart'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 export interface ProductCardProps {
   product: ShopifyProduct
@@ -16,6 +16,8 @@ export default function ProductCard({ product }: ProductCardProps) {
   const productDescription = product.description
   const productPrice = product.variants[0].price.amount
   const productPriceCurrency = product.variants[0].price.currencyCode
+
+  const router = useRouter()
 
   return (
     <div className="flex flex-col bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -48,7 +50,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => redirect(`/checkout/${product.handle}`)}
+              onClick={() => router.push(`/product/${product.handle}`)}
             >
               Buy now
             </Button>
