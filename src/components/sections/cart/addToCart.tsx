@@ -2,41 +2,37 @@
 
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-// import { getCart, setCartItem, removeCartItem } from '@/lib/session-store'
+import { useCart } from '@/context/cartContext'
 
 interface AddToCartButtonProps {
-  productHandle: string
+  variantId: string
 }
 
-export default function AddToCartButton({
-  productHandle,
-}: AddToCartButtonProps) {
+export default function AddToCartButton({ variantId }: AddToCartButtonProps) {
   const [quantity, setQuantity] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
+  const { cart, loading, addItem, removeItem, updateItemQuantity } = useCart()
 
   useEffect(() => {
     const fetchCartItem = async () => {
-      // const cart = await getCart()
-      const cart = null
-      setQuantity(cart ? cart[productHandle] || 0 : 0)
+      setQuantity(cart ? cart.totalQuantity || 0 : 0)
     }
     fetchCartItem()
-  }, [productHandle])
+  }, [cart])
 
   const handleAddToCart = async () => {
     setIsLoading(true)
-    // await setCartItem(productHandle, 1)
-    setQuantity(1)
+    await addItem(variantId, 1)
     setIsLoading(false)
   }
 
   const handleUpdateQuantity = async (newQuantity: number) => {
     setIsLoading(true)
     if (newQuantity > 0) {
-      // await setCartItem(productHandle, newQuantity)
+      await updateItemQuantity(variantId, newQuantity)
       setQuantity(newQuantity)
     } else {
-      // await removeCartItem(productHandle)
+      await removeItem(variantId)
       setQuantity(0)
     }
     setIsLoading(false)
@@ -55,6 +51,7 @@ export default function AddToCartButton({
     )
   }
 
+  if (loading) return <div>Loading...</div>
   return (
     <div className="flex items-center justify-between w-full">
       <Button

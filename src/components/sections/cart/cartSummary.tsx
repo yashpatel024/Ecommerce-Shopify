@@ -3,25 +3,13 @@
 import { ShopifyProduct } from '@/types/shopify.types'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
-
-type CartItem = {
-  handle: string
-  quantity: number
-}
+import { Cart } from '@/context/cartContext'
 
 interface CartSummaryProps {
-  cartItems: CartItem[]
-  products: ShopifyProduct[]
+  cartCost: Cart['cost']
 }
 
-export default function CartSummary({ cartItems, products }: CartSummaryProps) {
-  const subtotal = cartItems.reduce((total, item) => {
-    const product = products.find((p) => p.handle === item.handle)
-    return total + (product ? product.price * item.quantity : 0)
-  }, 0)
-  const tax = subtotal * 0.1 // Assuming 10% tax
-  const total = subtotal + tax
-
+export default function CartSummary({ cartCost }: CartSummaryProps) {
   const router = useRouter()
 
   return (
@@ -38,7 +26,7 @@ export default function CartSummary({ cartItems, products }: CartSummaryProps) {
                 Subtotal
               </dt>
               <dd className="text-base font-medium text-gray-900 dark:text-white">
-                ${subtotal.toFixed(2)}
+                ${cartCost.subtotalAmount.amount}
               </dd>
             </dl>
 
@@ -47,7 +35,7 @@ export default function CartSummary({ cartItems, products }: CartSummaryProps) {
                 Tax
               </dt>
               <dd className="text-base font-medium text-gray-900 dark:text-white">
-                ${tax.toFixed(2)}
+                ${cartCost.totalTaxAmount.amount}
               </dd>
             </dl>
           </div>
@@ -57,7 +45,7 @@ export default function CartSummary({ cartItems, products }: CartSummaryProps) {
               Total
             </dt>
             <dd className="text-base font-bold text-gray-900 dark:text-white">
-              ${total.toFixed(2)}
+              ${cartCost.totalAmount.amount}
             </dd>
           </dl>
         </div>

@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { ShopifyProduct } from '@/types/shopify.types'
 import { Button } from '@/components/ui/button'
 import AddToCartButton from '@/components/sections/cart/addToCart'
-// import { useRouter } from 'next/navigation'
 
 export interface ProductCardProps {
   product: ShopifyProduct
@@ -11,7 +10,8 @@ export interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const imageSrc = product.images[0].src || product.variants[0].image.url
-  const imageAlt = product.images[0].altText || product.title
+  const imageAlt = product.title
+  // const imageAlt = product.images[0].altText || product.title
   const productTitle = product.title
   const productDescription = product.description
   const productPrice = product.variants[0].price.amount
@@ -51,7 +51,8 @@ export default function ProductCard({ product }: ProductCardProps) {
             >
               Buy now
             </Button> */}
-            <AddToCartButton productHandle={product.handle} />
+            {/* TODO: Selected Variant ID */}
+            <AddToCartButton variantId={product.variants[0].id} />
           </div>
         </div>
       </div>

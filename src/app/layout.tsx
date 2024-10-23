@@ -4,6 +4,7 @@ import './globals.css'
 import Header from '@/components/layout/header'
 import Footer from '@/components/layout/footer'
 import { CartProvider } from '@/context/cartContext'
+import { cookies } from 'next/headers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -48,12 +49,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const cartId = (await cookies()).get('cartId')?.value
+
   return (
     <html lang="en">
       <body
         className={`bg-background-light text-primary-typography ${inter.className}`}
       >
-        <CartProvider>
+        <CartProvider initialCartId={cartId}>
           <div className="container-div mx-0 h-full">
             <Header />
             <div className="pt-28">{children}</div>

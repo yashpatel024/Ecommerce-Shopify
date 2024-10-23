@@ -3,24 +3,30 @@
 import Image from 'next/image'
 import { ShopifyProduct } from '@/types/shopify.types'
 import { useTransition } from 'react'
-// import { updateCartItemQuantity, removeFromCart } from '@/app/actions/cart'
+import { CartItem, useCart } from '@/context/cartContext'
 
 interface CartItemProps {
   product: ShopifyProduct
+  cartItem: CartItem | undefined
   quantity: number
 }
 
-export default function CartItems({ product, quantity }: CartItemProps) {
+export default function CartItems({
+  product,
+  cartItem,
+  quantity,
+}: CartItemProps) {
   const [isPending, startTransition] = useTransition()
+  const { updateItemQuantity, removeItem } = useCart()
 
   const handleQuantityChange = (newQuantity: number) => {
     startTransition(() =>
-      updateCartItemQuantity(product.handle, Math.max(0, newQuantity)),
+      updateItemQuantity(cartItem?.merchandise.id!, Math.max(0, newQuantity)),
     )
   }
 
   const handleRemove = () => {
-    startTransition(() => removeFromCart(product.handle))
+    startTransition(() => removeItem(cartItem?.merchandise.id!))
   }
 
   return (
@@ -28,7 +34,7 @@ export default function CartItems({ product, quantity }: CartItemProps) {
       <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
         <a href="#" className="shrink-0 md:order-1">
           <Image
-            src={product.images[0].src}
+            src={product.variants[0].image.src!}
             alt={product.title}
             width={80}
             height={80}
@@ -59,7 +65,7 @@ export default function CartItems({ product, quantity }: CartItemProps) {
           </div>
           <div className="text-end md:order-4 md:w-32">
             <p className="text-base font-bold text-gray-900 dark:text-white">
-              ${(product.price * quantity).toFixed(2)}
+              ${cartItem?.merchandise.price.amount ?? 0 * quantity}
             </p>
           </div>
         </div>

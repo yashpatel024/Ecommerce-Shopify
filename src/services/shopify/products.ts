@@ -1,4 +1,4 @@
-import { adminClient, client } from '@/lib/config/shopify'
+import { client } from '@/lib/config/shopify'
 import type { ShopifyProduct } from '@/types/shopify.types'
 import { deserializeProduct } from '@/lib/shopify/product/product-deserializer'
 
@@ -30,11 +30,11 @@ const createShopifyProduct = async (
   product: ShopifyProduct,
 ): Promise<ShopifyProduct> => {
   try {
-    const response = await adminClient.post('products', {
-      data: {
-        product: product,
-      },
-    })
+    // const response = await adminClient.post('products', {
+    //   data: {
+    //     product: product,
+    //   },
+    // })
     return product
   } catch (error) {
     console.error(`Error creating Shopify product ${product.title}:`, error)
