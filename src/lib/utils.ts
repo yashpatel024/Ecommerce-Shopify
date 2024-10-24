@@ -7,7 +7,11 @@ export function cn(...inputs: ClassValue[]) {
 
 // Get the host URL
 export const getHostUrl = (): string => {
-  return process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3000'
-    : process.env.PRODUCTION_URL!
+  // For absolute URLs in special cases
+  if (typeof window !== 'undefined') {
+    return window.location.origin
+  }
+
+  // For server-side and API routes, use relative paths
+  return ''
 }
