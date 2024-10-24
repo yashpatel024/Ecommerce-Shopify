@@ -6,13 +6,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // Get the host URL
-export const getHostUrl = () => {
-  const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
-
-  const host =
-    process.env.NODE_ENV === 'production'
-      ? process.env.VERCEL_URL!
-      : 'localhost:3000'
-
-  return `${protocol}://${host}`
+export const getHostUrl = (): string => {
+  return process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3000'
+    : process.env.PRODUCTION_URL!
 }

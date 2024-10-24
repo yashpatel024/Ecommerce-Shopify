@@ -12,6 +12,7 @@ export default function Products() {
   const [filteredProducts, setFilteredProducts] = useState<ShopifyProduct[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const hostUrl = getHostUrl()
+
   useEffect(() => {
     // Fetch all products when component mounts
     const fetchProducts = async () => {
