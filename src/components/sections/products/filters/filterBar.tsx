@@ -1,28 +1,35 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import FilterItem from './filterItem'
+import { PRODUCT_FILTERS } from '@/constants/filters'
+import type { FilterState } from '@/types/filter.types'
 
 interface FilterBarProps {
-  onFilterChange: (filters: Record<string, string[]>) => void
+  onFilterChange: (filters: FilterState) => void
+  initialFilters: FilterState
 }
 
-export default function FilterBar({ onFilterChange }: FilterBarProps) {
-  const [filters, setFilters] = useState<Record<string, string[]>>({
-    category: [],
-    price: [],
-    brand: [],
-    size: [],
-  })
+export default function FilterBar({
+  onFilterChange,
+  initialFilters,
+}: FilterBarProps) {
+  const [filters, setFilters] = useState<FilterState>(initialFilters)
+
+  useEffect(() => {
+    setFilters(initialFilters)
+  }, [initialFilters])
 
   const handleFilterChange = (type: string, value: string) => {
     const newFilters = { ...filters }
-    const currentTypeFilters = newFilters[type]
+    const currentTypeFilters = newFilters[type as keyof FilterState]
 
     if (currentTypeFilters.includes(value)) {
-      newFilters[type] = currentTypeFilters.filter((item) => item !== value)
+      newFilters[type as keyof FilterState] = currentTypeFilters.filter(
+        (item) => item !== value,
+      )
     } else {
-      newFilters[type] = [...currentTypeFilters, value]
+      newFilters[type as keyof FilterState] = [...currentTypeFilters, value]
     }
 
     setFilters(newFilters)
@@ -31,44 +38,15 @@ export default function FilterBar({ onFilterChange }: FilterBarProps) {
 
   return (
     <div className="space-y-4 p-4 bg-white rounded-lg shadow-sm">
-      <FilterItem
-        label="Category"
-        options={[
-          'Complete Skateboards',
-          'Decks',
-          'Trucks',
-          'Wheels',
-          'Bearings',
-          'Hardware',
-        ]}
-        selectedOptions={filters.category}
-        onChange={(value) => handleFilterChange('category', value)}
-      />
-      <FilterItem
-        label="Price Range"
-        options={['$0-$50', '$50-$100', '$100-$200', '$200+']}
-        selectedOptions={filters.price}
-        onChange={(value) => handleFilterChange('price', value)}
-      />
-      <FilterItem
-        label="Brand"
-        options={[
-          'Element',
-          'Santa Cruz',
-          'Baker',
-          'Independent',
-          'Spitfire',
-          'Bones',
-        ]}
-        selectedOptions={filters.brand}
-        onChange={(value) => handleFilterChange('brand', value)}
-      />
-      <FilterItem
-        label="Deck Size"
-        options={['7.75"', '8.0"', '8.25"', '8.5"', '8.75"']}
-        selectedOptions={filters.size}
-        onChange={(value) => handleFilterChange('size', value)}
-      />
+      {PRODUCT_FILTERS.map((filter) => (
+        <FilterItem
+          key={filter.id}
+          label={filter.label}
+          options={filter.options.map((opt) => opt.value)}
+          selectedOptions={filters[filter.id as keyof FilterState]}
+          onChange={(value) => handleFilterChange(filter.id, value)}
+        />
+      ))}
     </div>
   )
 }
