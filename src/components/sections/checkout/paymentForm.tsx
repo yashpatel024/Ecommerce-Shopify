@@ -1,18 +1,19 @@
+'use client'
+
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { useCheckout } from '@/hooks/useCheckout'
-import type { ShopifyProduct } from '@/types/shopify.types'
 import { Button } from '@/components/ui/button'
 import { useCart } from '@/context/cartContext'
+import { useRouter } from 'next/navigation'
 
-interface PaymentFormProps {
-  product: ShopifyProduct
-}
-
-export function PaymentForm({ product }: PaymentFormProps) {
+export function PaymentForm() {
   const stripe = useStripe()
   const elements = useElements()
   const { handlePayment, error, isLoading } = useCheckout()
   const { cart } = useCart()
+  const router = useRouter()
+
+  if (!cart) return null
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -25,7 +26,6 @@ export function PaymentForm({ product }: PaymentFormProps) {
     if (!cardElement) {
       return
     }
-    console.log('cardElement:', cardElement)
 
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',
@@ -38,7 +38,10 @@ export function PaymentForm({ product }: PaymentFormProps) {
     }
 
     if (paymentMethod) {
-      await handlePayment(paymentMethod, [product])
+      const result = await handlePayment(paymentMethod, cart.lines)
+      if (result.success) {
+        router.push(`/order/success?orderId=${result.orderId}`)
+      }
     }
   }
 
@@ -80,9 +83,7 @@ export function PaymentForm({ product }: PaymentFormProps) {
           className="w-full mt-4"
           type="submit"
         >
-          {isLoading
-            ? 'Processing...'
-            : `Pay $${(cart?.cost?.totalAmount?.amount || 0 * 1.0).toFixed(2)}`}
+          {isLoading ? 'Processing...' : `Pay $${cart.cost.totalAmount.amount}`}
         </Button>
       </form>
     </div>

@@ -1,5 +1,3 @@
-// src/components/sections/products/info/index.tsx
-
 'use client'
 
 import { useState } from 'react'

@@ -14,11 +14,6 @@ export async function GET(req: Request) {
   const brand = searchParams.get('brand')?.split(',') || []
   const size = searchParams.get('size')?.split(',') || []
 
-  console.log('category', category)
-  console.log('priceRange', priceRange)
-  console.log('brand', brand)
-  console.log('size', size)
-
   try {
     let filteredProducts = null
 
