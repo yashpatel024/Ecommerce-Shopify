@@ -1,39 +1,23 @@
-import { createOrder } from '@/services/shopify/orders'
-import type { ShopifyProduct } from '@/types/shopify.types'
-// import { stripe } from '@/utils/config/stripe'
+import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
-
-type RequestBody = {
-  paymentMethodId: string
-  orderData: ShopifyProduct[]
-}
+import { createOrder } from '@/services/shopify/orders'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string)
 
-const calculateOrderAmountInCent = (items: ShopifyProduct[]) => {
-  const total = items.reduce(
-    (acc: number, item: ShopifyProduct) =>
-      acc + Number(item.variants[0].price.amount),
-    0,
-  )
-  // return cents
-  return Math.round(total * 100)
-}
-
-export async function POST(request: Request, response: Response) {
-  const { paymentMethodId, orderData }: RequestBody = await request.json()
-
-  if (!paymentMethodId) {
-    return Response.json(
-      { error: 'Error with Payment Method' },
-      { status: 400 },
-    )
-  }
-
+export async function POST(request: NextRequest) {
   try {
+    const { paymentMethodId, amount, checkoutId } = await request.json()
+
+    if (!paymentMethodId || !amount || !checkoutId) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 },
+      )
+    }
+
+    // Create and confirm Stripe payment intent
     const paymentIntent = await stripe.paymentIntents.create({
-      // amount: calculateOrderAmountInCent(orderData),
-      amount: 100,
+      amount: Math.round(parseFloat(amount) * 100), // Convert to cents
       currency: 'CAD',
       payment_method: paymentMethodId,
       confirm: true,
@@ -44,19 +28,20 @@ export async function POST(request: Request, response: Response) {
     })
 
     if (paymentIntent.status !== 'succeeded') {
-      return Response.json({ error: 'Payment failed' }, { status: 400 })
+      throw new Error('Payment failed')
     }
 
-    // Create the order in Shopify
-    const order = await createOrder(orderData)
+    // Create Shopify order
+    const order = await createOrder(checkoutId)
 
-    return Response.json(order)
-  } catch (error) {
-    console.error('Error fetching order:', error)
-    return Response.json(
-      {
-        error: 'An error occurred while fetching order.',
-      },
+    return NextResponse.json({
+      success: true,
+      orderId: order.id,
+    })
+  } catch (error: any) {
+    console.error('Order creation error:', error)
+    return NextResponse.json(
+      { error: error.message || 'Order creation failed' },
       { status: 500 },
     )
   }

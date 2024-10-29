@@ -4,19 +4,20 @@ import { Elements } from '@stripe/react-stripe-js'
 import { PaymentForm } from '@/components/sections/checkout/paymentForm'
 import { ProductSummary } from '@/components/sections/checkout/productSummary'
 import { stripePromise } from '@/lib/config/stripe'
-import type { ShopifyProduct } from '@/types/shopify.types'
+import { useCart } from '@/context/cartContext'
 
-interface CheckoutFormProps {
-  product: ShopifyProduct
-}
+export default function CheckoutForm() {
+  const { cart } = useCart()
 
-export default function CheckoutForm({ product }: CheckoutFormProps) {
+  if (!cart) {
+    return <div>Loading...</div>
+  }
+
   return (
-    //TODO: Dynamic Price based on Cart
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <ProductSummary product={product} />
+      <ProductSummary />
       <Elements stripe={stripePromise}>
-        <PaymentForm product={product} />
+        <PaymentForm />
       </Elements>
     </div>
   )

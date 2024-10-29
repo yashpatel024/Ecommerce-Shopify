@@ -53,7 +53,7 @@ export default function CartSummary({ cartCost }: CartSummaryProps) {
         <Button
           variant="default"
           className="w-full"
-          onClick={() => router.push('/checkout/')}
+          onClick={() => router.push('/checkout')}
         >
           Proceed to Checkout
         </Button>
