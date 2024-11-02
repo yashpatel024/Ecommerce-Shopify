@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { PaymentMethod } from '@stripe/stripe-js'
 import { getHostUrl } from '@/lib/utils'
-import { CartItem } from '@/context/cartContext'
+import { Cart, CartItem } from '@/context/cartContext'
 
 interface CheckoutResponse {
   success: boolean
@@ -17,7 +17,7 @@ export function useCheckout() {
 
   const handlePayment = async (
     paymentMethod: PaymentMethod,
-    cartLines: CartItem[],
+    cart: Cart,
   ): Promise<CheckoutResponse> => {
     setIsLoading(true)
     setError(null)
@@ -31,11 +31,12 @@ export function useCheckout() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          cartLines,
+          cart,
         }),
       })
 
       const shopifyCheckout = await shopifyResponse.json()
+      console.log('shopifyCheckout', shopifyCheckout)
 
       if (shopifyCheckout.error) {
         throw new Error(shopifyCheckout.error)
@@ -49,12 +50,14 @@ export function useCheckout() {
         },
         body: JSON.stringify({
           paymentMethodId: paymentMethod.id,
-          amount: shopifyCheckout.totalPrice,
+          amount: shopifyCheckout.totalPrice.amount,
           checkoutId: shopifyCheckout.id,
         }),
       })
 
       const paymentResult = await stripeResponse.json()
+
+      // console.log('paymentResult', paymentResult)
 
       if (paymentResult.error) {
         throw new Error(paymentResult.error)
