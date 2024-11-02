@@ -4,9 +4,9 @@ import { CartItem } from '@/context/cartContext'
 
 export async function POST(request: NextRequest) {
   try {
-    const { cartLines } = await request.json()
-
-    const lineItems = cartLines.map((item: CartItem) => ({
+    const { cart } = await request.json()
+    console.log('cart', cart)
+    const lineItems = cart.lines.map((item: CartItem) => ({
       variantId: item.merchandise.id,
       quantity: item.quantity,
     }))

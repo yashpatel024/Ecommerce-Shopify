@@ -1,23 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
-import Stripe from 'stripe'
+import { stripe } from '@/lib/config/stripe'
 import { createOrder } from '@/services/shopify/orders'
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string)
 
 export async function POST(request: NextRequest) {
   try {
     const { paymentMethodId, amount, checkoutId } = await request.json()
 
-    if (!paymentMethodId || !amount || !checkoutId) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 },
-      )
-    }
-
-    // Create and confirm Stripe payment intent
+    // Create and confirm Stripe payment intent with test mode configurations
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(parseFloat(amount) * 100), // Convert to cents
+      amount: Math.round(parseFloat(amount) * 100),
       currency: 'CAD',
       payment_method: paymentMethodId,
       confirm: true,
@@ -25,23 +16,32 @@ export async function POST(request: NextRequest) {
         enabled: true,
         allow_redirects: 'never',
       },
+      metadata: {
+        checkoutId,
+        testMode: 'true',
+      },
+      // Test mode specific settings
+      description: 'Test payment',
+      statement_descriptor_suffix: 'TEST',
     })
 
     if (paymentIntent.status !== 'succeeded') {
-      throw new Error('Payment failed')
+      console.log('paymentIntent', paymentIntent)
+      throw new Error('Test payment failed')
     }
 
-    // Create Shopify order
-    const order = await createOrder(checkoutId)
+    // Create test order in Shopify
+    // const order = await createOrder(checkoutId)
 
     return NextResponse.json({
       success: true,
-      orderId: order.id,
+      paymentIntent: paymentIntent.id,
+      testMode: true,
     })
   } catch (error: any) {
-    console.error('Order creation error:', error)
+    console.error('Test order creation error:', error)
     return NextResponse.json(
-      { error: error.message || 'Order creation failed' },
+      { error: error.message || 'Test order creation failed' },
       { status: 500 },
     )
   }
