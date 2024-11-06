@@ -1,39 +1,14 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { stripe } from '@/lib/config/stripe'
 import { createOrder } from '@/services/shopify/orders'
-import type { ShopifyProduct } from '@/types/shopify.types'
-// import { stripe } from '@/utils/config/stripe'
-import Stripe from 'stripe'
 
-type RequestBody = {
-  paymentMethodId: string
-  orderData: ShopifyProduct[]
-}
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string)
-
-const calculateOrderAmountInCent = (items: ShopifyProduct[]) => {
-  const total = items.reduce(
-    (acc: number, item: ShopifyProduct) =>
-      acc + Number(item.variants[0].price.amount),
-    0,
-  )
-  // return cents
-  return Math.round(total * 100)
-}
-
-export async function POST(request: Request, response: Response) {
-  const { paymentMethodId, orderData }: RequestBody = await request.json()
-
-  if (!paymentMethodId) {
-    return Response.json(
-      { error: 'Error with Payment Method' },
-      { status: 400 },
-    )
-  }
-
+export async function POST(request: NextRequest) {
   try {
+    const { paymentMethodId, amount, checkoutId } = await request.json()
+
+    // Create and confirm Stripe payment intent with test mode configurations
     const paymentIntent = await stripe.paymentIntents.create({
-      // amount: calculateOrderAmountInCent(orderData),
-      amount: 100,
+      amount: Math.round(parseFloat(amount) * 100),
       currency: 'CAD',
       payment_method: paymentMethodId,
       confirm: true,
@@ -41,22 +16,32 @@ export async function POST(request: Request, response: Response) {
         enabled: true,
         allow_redirects: 'never',
       },
+      metadata: {
+        checkoutId,
+        testMode: 'true',
+      },
+      // Test mode specific settings
+      description: 'Test payment',
+      statement_descriptor_suffix: 'TEST',
     })
 
     if (paymentIntent.status !== 'succeeded') {
-      return Response.json({ error: 'Payment failed' }, { status: 400 })
+      console.log('paymentIntent', paymentIntent)
+      throw new Error('Test payment failed')
     }
 
-    // Create the order in Shopify
-    const order = await createOrder(orderData)
+    // Create test order in Shopify
+    // const order = await createOrder(checkoutId)
 
-    return Response.json(order)
-  } catch (error) {
-    console.error('Error fetching order:', error)
-    return Response.json(
-      {
-        error: 'An error occurred while fetching order.',
-      },
+    return NextResponse.json({
+      success: true,
+      paymentIntent: paymentIntent.id,
+      testMode: true,
+    })
+  } catch (error: any) {
+    console.error('Test order creation error:', error)
+    return NextResponse.json(
+      { error: error.message || 'Test order creation failed' },
       { status: 500 },
     )
   }

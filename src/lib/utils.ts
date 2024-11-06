@@ -13,5 +13,5 @@ export const getHostUrl = (): string => {
   }
 
   // For server-side and API routes, use relative paths
-  return ''
+  return 'http://localhost:3000'
 }
