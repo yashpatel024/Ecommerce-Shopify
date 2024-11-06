@@ -31,7 +31,6 @@ export async function POST(request: Request, response: Response) {
   }
 
   try {
-    console.log('Payment Intent started', paymentMethodId)
     const paymentIntent = await stripe.paymentIntents.create({
       // amount: calculateOrderAmountInCent(orderData),
       amount: 100,

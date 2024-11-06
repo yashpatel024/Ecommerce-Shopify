@@ -25,7 +25,6 @@ export function PaymentForm({ product }: PaymentFormProps) {
     if (!cardElement) {
       return
     }
-    console.log('cardElement:', cardElement)
 
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',

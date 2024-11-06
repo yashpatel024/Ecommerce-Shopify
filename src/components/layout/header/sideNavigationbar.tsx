@@ -1,7 +1,8 @@
 import HamburgerMenu from '@/components/ui/icons/hamburgerMenu'
 import { NAVIGATION_LINKS, type NavigationLink } from '@/constants/navLinks'
 import Link from 'next/link'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, Suspense } from 'react'
+import CollectionsNav from '@/components/layout/header/collectionsNav'
 
 interface SideNavigationBarProps {
   isScrolled: boolean
@@ -76,8 +77,7 @@ export default function SideNavigationBar({
         </div>
       </div>
       {activeSubmenu !== null &&
-        NAVIGATION_LINKS[activeSubmenu].submenu &&
-        NAVIGATION_LINKS[activeSubmenu].submenu.length > 0 && (
+        NAVIGATION_LINKS[activeSubmenu].href === '/products' && (
           <div
             className={`fixed z-10 top-0 -left-0 h-full w-64 bg-gray-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
               isAdjacentSidebarOpen && sidebarOpen
@@ -86,20 +86,36 @@ export default function SideNavigationBar({
             }`}
           >
             <div className="p-4">
-              <ul>
-                {NAVIGATION_LINKS[activeSubmenu].submenu!.map(
-                  (subItem: NavigationLink, subIndex) => (
-                    <li key={subIndex}>
-                      <Link
-                        href={subItem.href}
-                        className="block py-2 px-4 hover:bg-gray-200 rounded"
-                      >
-                        {subItem.name}
-                      </Link>
-                    </li>
-                  ),
-                )}
-              </ul>
+              <Suspense
+                fallback={
+                  <div className="animate-pulse space-y-4">
+                    {[...Array(5)].map((_, i) => (
+                      <div key={i} className="h-6 bg-gray-200 rounded w-3/4" />
+                    ))}
+                  </div>
+                }
+              >
+                <CollectionsNav />
+              </Suspense>
+              {/* Keep existing submenu code for other tabs
+            {NAVIGATION_LINKS[activeSubmenu].submenu &&
+              NAVIGATION_LINKS[activeSubmenu].submenu!.length > 0 &&
+              activeSubmenu !== 0 && (
+                <ul>
+                  {NAVIGATION_LINKS[activeSubmenu].submenu!.map(
+                    (subItem: NavigationLink, subIndex) => (
+                      <li key={subIndex}>
+                        <Link
+                          href={subItem.href}
+                          className="block py-2 px-4 hover:bg-gray-200 rounded"
+                        >
+                          {subItem.name}
+                        </Link>
+                      </li>
+                    ),
+                  )}
+                </ul>
+              )} */}
             </div>
           </div>
         )}
