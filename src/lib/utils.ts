@@ -7,11 +7,16 @@ export function cn(...inputs: ClassValue[]) {
 
 // Get the host URL
 export const getHostUrl = (): string => {
-  // For absolute URLs in special cases
+  // For custom production domain - Server Side Rendering
+  if (process.env.PRODUCTION_URL) {
+    return process.env.PRODUCTION_URL
+  }
+
+  // For custom production domain - Client Side Rendering
   if (typeof window !== 'undefined') {
     return window.location.origin
   }
 
-  // For server-side and API routes, use relative paths
-  return 'http://localhost:3000'
+  // For local development
+  return process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : ''
 }
