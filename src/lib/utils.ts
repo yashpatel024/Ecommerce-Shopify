@@ -7,6 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 // Get the host URL
 export const getHostUrl = (): string => {
+  console.log('Getting host URL', window)
   // For absolute URLs in special cases
   if (typeof window !== 'undefined') {
     return window.location.origin

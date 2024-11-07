@@ -61,7 +61,9 @@ export async function generateMetadata({
 
 export default async function Product({ params }: ProductPageProps) {
   let product: ShopifyProduct | null = null
+  console.log('Fetching product:', params.handle)
   const hostUrl = getHostUrl()
+  console.log('Host URL:', hostUrl)
   try {
     const response = await fetch(
       `${hostUrl}/api/products?handles=${params.handle}`,
@@ -69,6 +71,7 @@ export default async function Product({ params }: ProductPageProps) {
         next: { revalidate: 60 }, // Cache for 60 seconds
       },
     )
+    console.log('Fetching product:', response)
 
     if (!response.ok) {
       throw new Error('Failed to fetch product')
