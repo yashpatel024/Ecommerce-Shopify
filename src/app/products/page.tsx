@@ -5,32 +5,33 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import ProductGrid from '@/components/sections/products/grid/productGrid'
 import FilterBar from '@/components/sections/products/filters/filterBar'
 import ProductHeader from '@/components/sections/products/header/productHeader'
+import Pagination from '@/components/sections/products/pagination'
 import type { ShopifyProduct } from '@/types/shopify.types'
 import { getHostUrl } from '@/lib/utils'
 import { FilterState } from '@/types/filter.types'
 import { INITIAL_FILTER_STATE } from '@/constants/filters'
+import Container from '@/components/layout/container'
 
 export default function Products() {
   const [products, setProducts] = useState<ShopifyProduct[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [totalProducts, setTotalProducts] = useState(0)
-
-  // Initialize filter state with empty arrays for each filter type
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
   const [activeFilters, setActiveFilters] =
     useState<FilterState>(INITIAL_FILTER_STATE)
 
-  // Get URL params and router for navigation
   const searchParams = useSearchParams()
   const router = useRouter()
   const hostUrl = getHostUrl()
 
-  // Fetch products based on active filters
+  // Fetch products from API
   const fetchProducts = useCallback(
-    async (filters?: FilterState) => {
+    async (filters?: FilterState, page: number = 1) => {
       setIsLoading(true)
       try {
-        // Build query params from filters
         const params = new URLSearchParams()
+        params.set('page', page.toString())
 
         if (filters) {
           Object.entries(filters).forEach(([key, values]) => {
@@ -40,15 +41,15 @@ export default function Products() {
           })
         }
 
-        // Make API request with filter params
         const response = await fetch(
           `${hostUrl}/api/products?${params.toString()}`,
         )
         const data = await response.json()
 
-        // Update state with fetched data
         setProducts(data.products)
         setTotalProducts(data.totalProducts)
+        setTotalPages(data.totalPages)
+        setCurrentPage(data.currentPage)
       } catch (error) {
         console.error('Error fetching products:', error)
       } finally {
@@ -58,32 +59,36 @@ export default function Products() {
     [hostUrl],
   )
 
-  // Initialize products and filters from URL params
   useEffect(() => {
+    const page = parseInt(searchParams.get('page') || '1', 10)
     const urlFilters: FilterState = {
       category: searchParams.get('category')?.split(',') || [],
       price: searchParams.get('price')?.split(',') || [],
-      brand: searchParams.get('brand')?.split(',') || [],
-      size: searchParams.get('size')?.split(',') || [],
     }
     setActiveFilters(urlFilters)
-    fetchProducts(urlFilters)
+    fetchProducts(urlFilters, page)
   }, [searchParams, fetchProducts])
 
   // Handle filter changes from FilterBar component
   const handleFilterChange = (filters: FilterState) => {
     setActiveFilters(filters)
-
-    // Update URL without refresh
     const params = new URLSearchParams()
+    params.set('page', '1') // Reset to first page when filters change
     Object.entries(filters).forEach(([key, values]) => {
       if (values.length > 0) {
         params.set(key, values.join(','))
       }
     })
     router.push(`/products?${params.toString()}`, { scroll: false })
+    fetchProducts(filters, 1)
+  }
 
-    fetchProducts(filters)
+  // Handle pagination changes from Pagination component
+  const handlePageChange = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('page', page.toString())
+    router.push(`/products?${params.toString()}`, { scroll: true })
+    fetchProducts(activeFilters, page)
   }
 
   // Handle sorting changes from ProductHeader component
@@ -104,15 +109,15 @@ export default function Products() {
   }
 
   return (
-    <div className="max-w-[1440px] mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8">
-        <aside className="w-full">
+    <Container className="py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
+        <aside>
           <FilterBar
             onFilterChange={handleFilterChange}
             initialFilters={activeFilters}
           />
         </aside>
-        <main className="flex-1">
+        <main>
           <ProductHeader
             totalProducts={totalProducts}
             onSortChange={handleSortChange}
@@ -122,10 +127,17 @@ export default function Products() {
               Loading...
             </div>
           ) : (
-            <ProductGrid products={products} />
+            <>
+              <ProductGrid products={products} />
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            </>
           )}
         </main>
       </div>
-    </div>
+    </Container>
   )
 }

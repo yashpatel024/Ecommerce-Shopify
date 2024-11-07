@@ -1,7 +1,7 @@
 import { getProducts, getProductsByHandles } from '@/services/shopify/products'
 import { NextRequest, NextResponse } from 'next/server'
 
-const ITEMS_PER_PAGE = 10
+const ITEMS_PER_PAGE = 12
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
