@@ -9,6 +9,7 @@ interface CheckoutResponse {
   error?: string
   orderId?: string
   checkoutUrl?: string
+  paymentIntent?: string
 }
 
 export function useCheckout() {
@@ -32,7 +33,6 @@ export function useCheckout() {
         customerDetails: details,
       }),
     })
-
     if (!response.ok) {
       throw new Error('Failed to update checkout details')
     }
@@ -56,26 +56,26 @@ export function useCheckout() {
     const hostUrl = getHostUrl()
 
     try {
-      // First create Shopify checkout
-      const shopifyResponse = await fetch(`${hostUrl}/api/checkout`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          cart,
-          customerDetails,
-        }),
-      })
+      //   // First create Shopify checkout
+      //   const shopifyResponse = await fetch(`${hostUrl}/api/checkout`, {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: JSON.stringify({
+      //       cart,
+      //       customerDetails,
+      //     }),
+      //   })
 
-      const shopifyCheckout = await shopifyResponse.json()
+      //   const shopifyCheckout = await shopifyResponse.json()
 
-      if (shopifyCheckout.error) {
-        throw new Error(shopifyCheckout.error)
-      }
+      //   if (shopifyCheckout.error) {
+      //     throw new Error(shopifyCheckout.error)
+      //   }
 
       // Update checkout with customer details
-      await updateCheckoutDetails(shopifyCheckout.id, customerDetails)
+      await updateCheckoutDetails(cart.id, customerDetails)
 
       // Process payment with Stripe
       const stripeResponse = await fetch(`${hostUrl}/api/payment`, {
@@ -85,8 +85,8 @@ export function useCheckout() {
         },
         body: JSON.stringify({
           paymentMethodId: paymentMethod.id,
-          amount: shopifyCheckout.totalPrice.amount,
-          checkoutId: shopifyCheckout.id,
+          amount: cart.cost.totalAmount.amount,
+          checkoutId: cart.id,
           customerDetails,
         }),
       })
@@ -99,8 +99,9 @@ export function useCheckout() {
 
       return {
         success: true,
-        orderId: paymentResult.orderId,
-        checkoutUrl: shopifyCheckout.checkoutUrl,
+        paymentIntent: paymentResult.paymentIntent,
+        orderId: cart.id,
+        checkoutUrl: cart.checkoutUrl,
       }
     } catch (error: any) {
       setError(error.message || 'An error occurred during checkout')

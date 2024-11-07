@@ -47,9 +47,10 @@ export function PaymentForm() {
 
     if (paymentMethod) {
       const result = await handlePayment(paymentMethod, cart)
+      console.log('result', result)
       if (result.success) {
         await clearCart() // Clear cart after successful checkout
-        router.push(`/order/success?orderId=${result.orderId}`)
+        await router.push(`/order/success?orderId=${result.orderId}`)
       }
     }
   }

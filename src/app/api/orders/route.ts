@@ -1,13 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { client } from '@/lib/config/shopify'
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { orderId: string } },
-) {
+export async function GET(request: NextRequest) {
   try {
     // Fetch order details from Shopify
-    const order = await client.checkout.fetch(params.orderId)
+    const orderId = request.nextUrl.searchParams.get('orderId')
+    if (!orderId) {
+      return NextResponse.json(
+        { error: 'Order ID is required' },
+        { status: 400 },
+      )
+    }
+    const order = await client.checkout.fetch(orderId)
 
     if (!order) {
       return NextResponse.json({ error: 'Order not found' }, { status: 404 })

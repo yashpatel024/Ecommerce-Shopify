@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
-import type { Checkout } from 'shopify-buy'
+import type { Checkout, CheckoutLineItem } from 'shopify-buy'
 import { revalidateTag } from 'next/cache'
 import { getHostUrl } from '@/lib/utils'
 
@@ -133,17 +133,17 @@ export function CartProvider({
         (sum: number, item: any) => sum + item.quantity,
         0,
       ),
-      lines: shopifyCheckout.lineItems.map((item: any) => ({
+      lines: shopifyCheckout.lineItems.map((item: CheckoutLineItem) => ({
         id: item.id,
         quantity: item.quantity,
         merchandise: {
-          id: item.variant.id,
+          id: item.id,
           title: item.title,
-          handle: item.variant.product.handle,
-          image: item.variant.image.url,
+          handle: item.variant?.product.handle ?? '',
+          image: item.variant?.image.src ?? '',
           price: {
-            amount: item.variant.price.amount,
-            currencyCode: item.variant.price.currencyCode,
+            amount: item.variant?.price.amount ?? 0,
+            currencyCode: item.variant?.price.currencyCode ?? '',
           },
         },
       })),
@@ -266,19 +266,13 @@ export function CartProvider({
   const clearCart = async () => {
     setLoading(true)
     try {
-      localStorage.removeItem('cartId')
-      setCart(undefined)
+      await createNewCart()
     } catch (error) {
       console.error('Error clearing cart:', error)
     } finally {
       setLoading(false)
     }
   }
-
-  // const redirectToCheckout = async () => {
-  //   if (!cart) return
-  //   redirect(cart.checkoutUrl)
-  // }
 
   const value = {
     cart,

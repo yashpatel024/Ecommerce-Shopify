@@ -5,33 +5,16 @@ import { CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { getHostUrl } from '@/lib/utils'
+import type { Checkout } from 'shopify-buy'
 
 interface OrderSuccessContentProps {
   orderId: string
 }
 
-interface OrderDetails {
-  id: string
-  totalPrice: {
-    amount: string
-    currencyCode: string
-  }
-  createdAt: string
-  customerEmail: string
-  shippingAddress: {
-    address1: string
-    address2?: string
-    city: string
-    province: string
-    zip: string
-    country: string
-  }
-}
-
 export default function OrderSuccessContent({
   orderId,
 }: OrderSuccessContentProps) {
-  const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null)
+  const [orderDetails, setOrderDetails] = useState<Checkout | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
   const hostUrl = getHostUrl()
@@ -39,12 +22,13 @@ export default function OrderSuccessContent({
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
-        const response = await fetch(`${hostUrl}/api/orders/${orderId}`)
+        const response = await fetch(`${hostUrl}/api/orders?orderId=${orderId}`)
         if (!response.ok) {
           throw new Error('Failed to fetch order details')
         }
         const data = await response.json()
         setOrderDetails(data)
+        console.log('orderDetails', orderDetails)
       } catch (error) {
         console.error('Error fetching order details:', error)
       } finally {
@@ -76,7 +60,7 @@ export default function OrderSuccessContent({
           </h2>
           <p className="text-gray-600">Order #{orderDetails.id}</p>
           <p className="text-gray-600">
-            A confirmation email has been sent to {orderDetails.customerEmail}
+            A confirmation email has been sent to {orderDetails.email}
           </p>
         </div>
 
@@ -95,16 +79,16 @@ export default function OrderSuccessContent({
           <div>
             <h3 className="text-lg font-semibold mb-2">Shipping Address</h3>
             <div className="text-gray-600">
-              <p>{orderDetails.shippingAddress.address1}</p>
-              {orderDetails.shippingAddress.address2 && (
+              <p>{orderDetails.shippingAddress?.address1}</p>
+              {orderDetails.shippingAddress?.address2 && (
                 <p>{orderDetails.shippingAddress.address2}</p>
               )}
               <p>
-                {orderDetails.shippingAddress.city},{' '}
-                {orderDetails.shippingAddress.province}{' '}
-                {orderDetails.shippingAddress.zip}
+                {orderDetails.shippingAddress?.city},{' '}
+                {orderDetails.shippingAddress?.province}{' '}
+                {orderDetails.shippingAddress?.zip}
               </p>
-              <p>{orderDetails.shippingAddress.country}</p>
+              <p>{orderDetails.shippingAddress?.country}</p>
             </div>
           </div>
         </div>
