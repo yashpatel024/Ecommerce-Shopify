@@ -6,8 +6,6 @@ import { type ShopifyProduct } from '@/types/shopify.types'
 import NewProduct from '@/components/cards/newProductCard'
 import { getHostUrl } from '@/lib/utils'
 
-//
-
 export default function Hero() {
   const [products, setProducts] = useState<ShopifyProduct[]>([])
   const hostUrl = getHostUrl()

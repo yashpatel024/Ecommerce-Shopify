@@ -5,14 +5,12 @@ import {
   CarouselContent,
   CarouselDots,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from '@/components/sections/carousel/carousel'
 import Autoplay from 'embla-carousel-autoplay'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { type ShopifyProduct } from '@/types/shopify.types'
-
+import { useRouter } from 'next/navigation'
 type ProductCarouselProps = {
   products: ShopifyProduct[]
   className?: string
@@ -22,6 +20,7 @@ export default function ProductCarousel({
   products,
   className,
 }: ProductCarouselProps) {
+  const router = useRouter()
   return (
     <Carousel
       plugins={[Autoplay({ delay: 4000 })]}
@@ -112,6 +111,7 @@ export default function ProductCarousel({
                     }}
                     transition={{ duration: 0.5, delay: 1 }}
                     className="text-xs md:text-base mt-2 md:mt-6 border-[1px] border-gray-400 px-4 py-2"
+                    onClick={() => router.push(`/product/${product.handle}`)}
                   >
                     View Product
                   </motion.button>

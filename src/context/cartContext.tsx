@@ -55,6 +55,7 @@ interface CartContextType {
   addItem: (variantId: string, quantity: number) => Promise<void>
   removeItem: (lineItemId: string) => Promise<void>
   updateItemQuantity: (lineItemId: string, quantity: number) => Promise<void>
+  clearCart: () => Promise<void>
   // redirectToCheckout: () => Promise<void>
 }
 
@@ -262,6 +263,18 @@ export function CartProvider({
     }
   }
 
+  const clearCart = async () => {
+    setLoading(true)
+    try {
+      localStorage.removeItem('cartId')
+      setCart(undefined)
+    } catch (error) {
+      console.error('Error clearing cart:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   // const redirectToCheckout = async () => {
   //   if (!cart) return
   //   redirect(cart.checkoutUrl)
@@ -273,6 +286,7 @@ export function CartProvider({
     addItem,
     removeItem,
     updateItemQuantity,
+    clearCart,
   }
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>

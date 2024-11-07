@@ -1,19 +1,27 @@
 'use client'
 
+import { useState } from 'react'
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { useCheckout } from '@/hooks/useCheckout'
 import { Button } from '@/components/ui/button'
 import { useCart } from '@/context/cartContext'
 import { useRouter } from 'next/navigation'
+import { CustomerDetailsForm, CustomerDetails } from './customerDetailsForm'
 
 export function PaymentForm() {
+  const [showPayment, setShowPayment] = useState(false)
   const stripe = useStripe()
   const elements = useElements()
-  const { handlePayment, error, isLoading } = useCheckout()
-  const { cart } = useCart()
+  const { handlePayment, error, isLoading, setCustomerDetails } = useCheckout()
+  const { cart, clearCart } = useCart()
   const router = useRouter()
 
   if (!cart) return null
+
+  const handleCustomerDetails = (details: CustomerDetails) => {
+    setCustomerDetails(details)
+    setShowPayment(true)
+  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -40,9 +48,19 @@ export function PaymentForm() {
     if (paymentMethod) {
       const result = await handlePayment(paymentMethod, cart)
       if (result.success) {
+        await clearCart() // Clear cart after successful checkout
         router.push(`/order/success?orderId=${result.orderId}`)
       }
     }
+  }
+
+  if (!showPayment) {
+    return (
+      <CustomerDetailsForm
+        onSubmit={handleCustomerDetails}
+        isLoading={isLoading}
+      />
+    )
   }
 
   return (

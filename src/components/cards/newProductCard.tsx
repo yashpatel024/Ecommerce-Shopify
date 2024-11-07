@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { type ShopifyProduct } from '@/types/shopify.types'
 import { motion } from 'framer-motion'
+import { useRouter } from 'next/navigation'
 
 interface NewProductProps {
   product: ShopifyProduct
@@ -9,6 +10,8 @@ interface NewProductProps {
 }
 
 export default function NewProduct({ product, variant }: NewProductProps) {
+  const router = useRouter()
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -56,6 +59,7 @@ export default function NewProduct({ product, variant }: NewProductProps) {
             <Button
               variant="outline"
               className="w-1/3 text-xs mt-2 border-[1px] bg-transparent border-gray-400 px-4 py-2 hover:bg-primary text-primary-typography"
+              onClick={() => router.push(`/product/${product.handle}`)}
             >
               Buy Now
             </Button>

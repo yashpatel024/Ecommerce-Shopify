@@ -67,13 +67,15 @@ export default function ProductInfo({ product }: ProductInfoProps) {
             <TabsTrigger value="reviews">Reviews</TabsTrigger>
           </TabsList>
           <TabsContent value="description" className="mt-4 prose">
-            <div dangerouslySetInnerHTML={{ __html: product.description }} />
+            <div
+              dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+            />
           </TabsContent>
           <TabsContent value="details" className="mt-4">
-            {/* Add product details here */}
+            Details
           </TabsContent>
           <TabsContent value="reviews" className="mt-4">
-            {/* Add reviews component here */}
+            Reviews
           </TabsContent>
         </Tabs>
       </div>

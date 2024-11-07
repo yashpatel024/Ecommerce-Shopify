@@ -84,6 +84,7 @@ export interface ShopifyImage {
 
 export interface ShopifyVariant {
   id: string
+  title: string
   price: {
     amount: string
   }

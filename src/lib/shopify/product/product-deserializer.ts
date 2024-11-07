@@ -29,6 +29,7 @@ export const deserializeProduct = (product: any): ShopifyProduct => {
           src: variant.image.src,
           alt: variant.image.alt,
         },
+        title: variant.title,
       }),
     ),
     tags: product.tags,
