@@ -1,10 +1,11 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { FilterOption } from '@/types/filter.types'
 
 interface FilterItemProps {
   label: string
-  options: string[]
+  options: FilterOption[]
   selectedOptions: string[]
   onChange: (value: string) => void
 }
@@ -21,13 +22,15 @@ export default function FilterItem({
       <div className="flex flex-wrap gap-2">
         {options.map((option) => (
           <Button
-            key={option}
-            variant={selectedOptions.includes(option) ? 'default' : 'outline'}
+            key={option.value}
+            variant={
+              selectedOptions.includes(option.value) ? 'default' : 'outline'
+            }
             size="sm"
-            onClick={() => onChange(option)}
+            onClick={() => onChange(option.value)}
             className="text-xs"
           >
-            {option}
+            {option.label}
           </Button>
         ))}
       </div>

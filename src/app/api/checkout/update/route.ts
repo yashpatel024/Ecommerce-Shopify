@@ -5,7 +5,6 @@ import type { MailingAddressInput } from 'shopify-buy'
 export async function POST(request: NextRequest) {
   try {
     const { checkoutId, customerDetails } = await request.json()
-    console.log('customerDetails', customerDetails)
     // Update checkout with customer information
     const checkout = await client.checkout.updateEmail(
       checkoutId,

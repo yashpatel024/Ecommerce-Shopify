@@ -12,6 +12,4 @@ export type FilterCategory = {
 export type FilterState = {
   category: string[]
   price: string[]
-  brand: string[]
-  size: string[]
 }

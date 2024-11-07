@@ -28,7 +28,6 @@ export default function OrderSuccessContent({
         }
         const data = await response.json()
         setOrderDetails(data)
-        console.log('orderDetails', orderDetails)
       } catch (error) {
         console.error('Error fetching order details:', error)
       } finally {

@@ -11,8 +11,6 @@ export async function GET(req: Request) {
   // filter parameters
   const category = searchParams.get('category')?.split(',') || []
   const priceRange = searchParams.get('price')?.split(',') || []
-  const brand = searchParams.get('brand')?.split(',') || []
-  const size = searchParams.get('size')?.split(',') || []
 
   try {
     let filteredProducts = null
@@ -20,48 +18,33 @@ export async function GET(req: Request) {
     if (handles.length > 0) {
       filteredProducts = await getProductsByHandles(handles)
     } else {
+      // Get all products and apply filters
       const allProducts = await getProducts()
-      filteredProducts = allProducts
 
-      // Apply filters
-      if (filteredProducts) {
-        // Filter by category
-        if (category.length > 0) {
-          filteredProducts = filteredProducts.filter((product) =>
-            category.some(
-              (cat) => product.productType.toLowerCase() === cat.toLowerCase(),
-            ),
-          )
-        }
+      filteredProducts = allProducts.filter((product) => {
+        const matchesCategory =
+          category.length === 0 || category.includes(product.productType)
 
-        // Filter by price range
-        if (priceRange.length > 0) {
-          filteredProducts = filteredProducts.filter((product) => {
+        const matchesPrice =
+          priceRange.length === 0 ||
+          priceRange.some((range) => {
             const price = product.variants[0].price.amount
-            return priceRange.some((range) => {
-              const [min, max] = range.split('-').map((p) => p.replace('$', ''))
-              if (max === '+') {
-                return price >= parseFloat(min)
-              }
-              return price >= parseFloat(min) && price <= parseFloat(max)
-            })
+            switch (range) {
+              case '$0-$50':
+                return price <= 50
+              case '$50-$100':
+                return price > 50 && price <= 100
+              case '$100-$200':
+                return price > 100 && price <= 200
+              case '$200+':
+                return price > 200
+              default:
+                return false
+            }
           })
-        }
 
-        // Filter by brand
-        if (brand.length > 0) {
-          filteredProducts = filteredProducts.filter((product) =>
-            brand.some((b) => product.vendor.toLowerCase() === b.toLowerCase()),
-          )
-        }
-
-        // Filter by size
-        if (size.length > 0) {
-          filteredProducts = filteredProducts.filter((product) =>
-            product.variants.some((variant) => size.includes(variant.title)),
-          )
-        }
-      }
+        return matchesCategory && matchesPrice
+      })
     }
 
     const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)

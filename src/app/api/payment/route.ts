@@ -26,7 +26,6 @@ export async function POST(request: NextRequest) {
     })
 
     if (paymentIntent.status !== 'succeeded') {
-      console.log('paymentIntent', paymentIntent)
       throw new Error('Test payment failed')
     }
 

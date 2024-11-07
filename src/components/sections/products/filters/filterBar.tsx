@@ -42,7 +42,7 @@ export default function FilterBar({
         <FilterItem
           key={filter.id}
           label={filter.label}
-          options={filter.options.map((opt) => opt.value)}
+          options={filter.options}
           selectedOptions={filters[filter.id as keyof FilterState]}
           onChange={(value) => handleFilterChange(filter.id, value)}
         />
