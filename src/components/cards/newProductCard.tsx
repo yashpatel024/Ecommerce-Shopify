@@ -30,7 +30,9 @@ export default function NewProduct({ product, variant }: NewProductProps) {
             <span className="bg-primary-500 bg-primary text-wh te px-2 py-1 rounded">
               New
             </span>
-            <span className="font-semibold">${'00'}</span>
+            <span className="font-semibold">
+              ${product.variants[0].price.amount}
+            </span>
           </motion.div>
           <motion.div
             initial={{ scale: 1 }}
@@ -73,7 +75,7 @@ export default function NewProduct({ product, variant }: NewProductProps) {
             transition={{ delay: 0.2, duration: 0.3 }}
             className="text-xl font-bold mb-2 text-center lg:text-right"
           >
-            New Product 2021
+            New Product 2024
           </motion.h2>
           <motion.div
             initial={{ scale: 0.8 }}
